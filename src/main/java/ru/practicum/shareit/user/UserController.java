@@ -8,6 +8,7 @@ import ru.practicum.shareit.ApiPathConstants;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Collection;
 
 @RestController
 @RequiredArgsConstructor
@@ -32,7 +33,15 @@ public class UserController {
         userService.delete(id);
     }
 
-    //  @GetMapping
+    @GetMapping
+    public Collection<User> getAll() {
+        return userService.getUsers();
+    }
+
+    @GetMapping(ApiPathConstants.BY_ID_PATH)
+    public User getUserById(@PathVariable @Positive Long id) {
+        return userService.getUserById(id);
+    }
 
 
 }
