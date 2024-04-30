@@ -1,6 +1,6 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.exception;
 
-public class UserNotFoundException extends RuntimeException {
+public class UserNotFoundException extends AbstractNotFoundException {
 
     private static final String DEFAULT_MESSAGE = "User by id=%s not found";
 

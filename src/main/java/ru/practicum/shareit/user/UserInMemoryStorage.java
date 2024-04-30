@@ -3,6 +3,8 @@ package ru.practicum.shareit.user;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.exception.DuplicatedEmailException;
+import ru.practicum.shareit.exception.UserNotFoundException;
 
 import java.util.*;
 

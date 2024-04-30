@@ -13,14 +13,6 @@ public class UserConverter {
                 .build();
     }
 
-    public UserDto convertUser2UserDto(User user, Long id) {
-        return UserDto.builder()
-                .id(id)
-                .name(user.getName())
-                .email(user.getEmail())
-                .build();
-    }
-
     public User convertUserDto2User(UserDto userDto) {
         return User.builder()
                 .id(userDto.getId())

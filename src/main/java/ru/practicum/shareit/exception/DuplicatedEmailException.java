@@ -1,4 +1,4 @@
-package ru.practicum.shareit.user;
+package ru.practicum.shareit.exception;
 
 public class DuplicatedEmailException extends RuntimeException {
     private static final String DEFAULT_MESSAGE = "Operation is not permitted due to duplicated email";

@@ -5,22 +5,20 @@ import lombok.NonNull;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 import ru.practicum.shareit.request.ItemRequest;
-import ru.practicum.shareit.user.User;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 
-/**
- * TODO Sprint add-controllers.
- */
 @Value
 @Builder(toBuilder = true)
 public class ItemDto {
 
-    @NotNull Long id;
-    @NotNull String name;
-    String description;
-    @NotNull Boolean available;
+    @Nullable
+    Long id;
+    @NotBlank String name;
+    @NotBlank String description;
+    boolean available;
     @NonNull Long userId;
-    @Nullable ItemRequest request;
+    @Nullable
+    ItemRequest request;
 
 }
