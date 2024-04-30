@@ -72,6 +72,7 @@ public class ItemInMemoryStorage implements ItemStorage {
                 .filter(ItemDto::isAvailable)
                 .collect(Collectors.toList());
     }
+
     private Long getNextValidId() {
         nextId++;
         return nextId;
