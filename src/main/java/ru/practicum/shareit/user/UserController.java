@@ -23,9 +23,10 @@ public class UserController {
         return userService.addUser(user);
     }
 
-    @PutMapping
-    public User updateUser(@Valid @RequestBody User user) {
-        return userService.updateUser(user);
+    @PatchMapping(ApiPathConstants.BY_ID_PATH)
+    public User updateUser(@RequestBody User user,
+                           @PathVariable @Positive Long id) {
+        return userService.updateUser(user, id);
     }
 
     @DeleteMapping(ApiPathConstants.BY_ID_PATH)
@@ -34,7 +35,7 @@ public class UserController {
     }
 
     @GetMapping
-    public Collection<User> getAll() {
+    public Collection<User> getAllUsers() {
         return userService.getUsers();
     }
 

@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Value
 @Builder(toBuilder = true)
@@ -13,5 +14,5 @@ public class UserDto {
     @Nullable
     Long id;
     @NotBlank String name;
-    @Email String email;
+    @Email @NotNull String email;
 }

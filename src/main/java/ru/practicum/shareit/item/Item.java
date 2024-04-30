@@ -2,6 +2,7 @@ package ru.practicum.shareit.item;
 
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
@@ -16,7 +17,7 @@ public class Item {
     @NotNull String name;
     String description;
     @NotNull Boolean available;
-    @NotNull User owner;
-    ItemRequest request;
+    @Nullable User owner;
+    @Nullable ItemRequest request;
 
 }

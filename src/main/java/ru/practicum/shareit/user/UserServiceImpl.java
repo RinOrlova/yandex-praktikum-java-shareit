@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Positive;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,10 +25,23 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User updateUser(User user) {
-        UserDto userDto = userConverter.convertUser2UserDto(user);
+    public User updateUser(User user, @Positive Long id) {
+        User userToStore = recreateUser(user, id);
+        UserDto userDto = userConverter.convertUser2UserDto(userToStore);
         UserDto userFromStorage = userStorage.update(userDto);
         return userConverter.convertUserDto2User(userFromStorage);
+    }
+
+    private User recreateUser(User user, Long id) {
+        User userById = getUserById(id);
+        User.UserBuilder userByIdBuilder = userById.toBuilder();
+        if (user.getEmail() != null) {
+            userByIdBuilder.email(user.getEmail());
+        }
+        if (user.getName() != null) {
+            userByIdBuilder.name(user.getName());
+        }
+        return userByIdBuilder.build();
     }
 
     @Override

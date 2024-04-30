@@ -19,13 +19,14 @@ public class ItemController {
 
     private final ItemService itemService;
 
-    @GetMapping
+    @PostMapping
     public Item add(@Valid @RequestBody Item item) {
         return itemService.add(item);
     }
 
-    @PutMapping
-    public Item update(@Valid @RequestBody Item item) {
+    @PatchMapping(ApiPathConstants.BY_ID_PATH)
+    public Item update(@PathVariable @Positive Long id) {
+        Item item = itemService.getItemById(id);
         return itemService.update(item);
     }
 
@@ -35,7 +36,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public Collection<Item> getAll() {
+    public Collection<Item> getAllItems() {
         return itemService.getItems();
     }
 
