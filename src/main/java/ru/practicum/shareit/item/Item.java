@@ -17,7 +17,6 @@ public class Item {
     @NotNull String name;
     String description;
     @NotNull Boolean available;
-    @Nullable User owner;
     @Nullable ItemRequest request;
 
 }

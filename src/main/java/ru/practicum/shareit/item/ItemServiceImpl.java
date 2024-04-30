@@ -17,15 +17,15 @@ public class ItemServiceImpl implements ItemService {
     private final ItemConverter itemConverter;
 
     @Override
-    public Item add(Item item) {
-        ItemDto itemDto = itemConverter.convertItemToItemDto(item);
+    public Item add(Item item, Long userId) {
+        ItemDto itemDto = itemConverter.convertItemToItemDto(item, userId);
         ItemDto itemFromStorage = itemStorage.add(itemDto);
         return itemConverter.convertItemDtoToItem(itemFromStorage);
     }
 
     @Override
-    public Item update(Item item) {
-        ItemDto itemDto = itemConverter.convertItemToItemDto(item);
+    public Item update(Item item, Long userId) {
+        ItemDto itemDto = itemConverter.convertItemToItemDto(item, userId);
         ItemDto itemFromStorage = itemStorage.update(itemDto);
         return itemConverter.convertItemDtoToItem(itemFromStorage);
     }
