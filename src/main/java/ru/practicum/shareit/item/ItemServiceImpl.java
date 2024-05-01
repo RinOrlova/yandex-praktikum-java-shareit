@@ -19,15 +19,15 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemStorage itemStorage;
-    private final ItemConverter itemConverter;
+    private final ItemMapper itemMapper;
     private final UserService userService;
 
     @Override
     public Item add(Item item, Long userId) {
         userService.getUserById(userId);
-        ItemDto itemDto = itemConverter.convertItemToItemDto(item, userId);
+        ItemDto itemDto = itemMapper.item2ItemDto(item, userId);
         ItemDto itemFromStorage = itemStorage.add(itemDto);
-        return itemConverter.convertItemDtoToItem(itemFromStorage);
+        return itemMapper.itemDto2Item(itemFromStorage);
     }
 
     @Override
@@ -36,9 +36,9 @@ public class ItemServiceImpl implements ItemService {
         ItemDto itemToCheck = itemStorage.getById(id).get();
         if (itemToCheck.getUserId().equals(userId)) {
             Item itemToStore = recreateItem(item, id);
-            ItemDto itemDto = itemConverter.convertItemToItemDto(itemToStore, userId);
+            ItemDto itemDto = itemMapper.item2ItemDto(itemToStore, userId);
             ItemDto itemFromStorage = itemStorage.update(itemDto);
-            return itemConverter.convertItemDtoToItem(itemFromStorage);
+            return itemMapper.itemDto2Item(itemFromStorage);
         }
         throw new ForbiddenException("");
     }
@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
         Collection<ItemDto> itemsFromStorage = itemStorage.getAll();
         return itemsFromStorage.stream()
                 .filter(itemDto -> itemDto.getUserId().equals(userId))
-                .map(itemConverter::convertItemDtoToItem)
+                .map(itemMapper::itemDto2Item)
                 .collect(Collectors.toList());
     }
 
@@ -62,14 +62,14 @@ public class ItemServiceImpl implements ItemService {
     public Item getItemById(Long id) {
         ItemDto itemFromStorage = itemStorage.getById(id)
                 .orElseThrow(() -> new ItemNotFoundException(id));
-        return itemConverter.convertItemDtoToItem(itemFromStorage);
+        return itemMapper.itemDto2Item(itemFromStorage);
     }
 
     @Override
     public Collection<Item> search(String text) {
         if (StringUtils.hasText(text)) {
             return itemStorage.search(text).stream()
-                    .map(itemConverter::convertItemDtoToItem)
+                    .map(itemMapper::itemDto2Item)
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();

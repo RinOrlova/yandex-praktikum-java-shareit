@@ -15,22 +15,22 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
     private final UserStorage userStorage;
-    private final UserConverter userConverter;
+    private final UserMapper userMapper;
 
     @Override
     public User addUser(User user) {
-        UserDto userDto = userConverter.convertUser2UserDto(user);
+        UserDto userDto = userMapper.user2UserDto(user);
         UserDto userFromStorage = userStorage.add(userDto);
-        return userConverter.convertUserDto2User(userFromStorage);
+        return userMapper.userDto2User(userFromStorage);
     }
 
 
     @Override
     public User updateUser(User user, @Positive Long id) {
         User userToStore = recreateUser(user, id);
-        UserDto userDto = userConverter.convertUser2UserDto(userToStore);
+        UserDto userDto = userMapper.user2UserDto(userToStore);
         UserDto userFromStorage = userStorage.update(userDto);
-        return userConverter.convertUserDto2User(userFromStorage);
+        return userMapper.userDto2User(userFromStorage);
     }
 
     private User recreateUser(User user, Long id) {
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
     public List<User> getUsers() {
         Collection<UserDto> usersFromStorage = userStorage.getAll();
         return usersFromStorage.stream()
-                .map(userConverter::convertUserDto2User)
+                .map(userMapper::userDto2User)
                 .collect(Collectors.toList());
     }
 
@@ -62,6 +62,6 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long id) {
         UserDto userFromStorage = userStorage.getById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
-        return userConverter.convertUserDto2User(userFromStorage);
+        return userMapper.userDto2User(userFromStorage);
     }
 }

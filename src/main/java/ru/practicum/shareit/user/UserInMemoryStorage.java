@@ -79,7 +79,7 @@ public class UserInMemoryStorage implements UserStorage {
 
     @Override
     public Collection<UserDto> getAll() {
-        return usersByUserId.values();
+        return new ArrayList<>(usersByUserId.values());
     }
 
     @Override

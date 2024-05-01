@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.ItemNotFoundException;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -55,7 +52,7 @@ public class ItemInMemoryStorage implements ItemStorage {
 
     @Override
     public Collection<ItemDto> getAll() {
-        return itemMap.values();
+        return new ArrayList<>(itemMap.values());
     }
 
     @Override
