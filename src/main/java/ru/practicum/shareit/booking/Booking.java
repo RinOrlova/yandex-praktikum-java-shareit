@@ -1,19 +1,23 @@
 package ru.practicum.shareit.booking;
 
+import lombok.Builder;
+import lombok.NonNull;
+import lombok.Value;
+import org.springframework.lang.Nullable;
 import ru.practicum.shareit.item.Item;
 import ru.practicum.shareit.user.User;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-
-/**
- * TODO Sprint add-bookings.
- */
+@Value
+@Builder(toBuilder = true)
 public class Booking {
 
+    @Nullable
     Long id;
-    LocalDateTime start;
-    LocalDateTime end;
-    Item item;
-    User booker;
-    Status status;
+    @NonNull LocalDateTime start;
+    @NonNull LocalDateTime end;
+    @NonNull Item item;
+    @NonNull User booker;
+    @NotNull Status status;
 }
