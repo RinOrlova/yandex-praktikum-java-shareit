@@ -3,7 +3,9 @@ package ru.practicum.shareit.item;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.practicum.shareit.user.UserMapper;
+import org.mapstruct.Named;
+import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.user.mapper.UserMapper;
 
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface ItemMapper {
@@ -15,6 +17,25 @@ public interface ItemMapper {
 
     default ItemDto mapContext(Item item, @Context Long userId) {
         return item2ItemDto(item, userId);
+    }
+
+    // Mapping from DTO to Entity
+    @Mapping(source = "userId", target = "userDto", qualifiedByName = "userIdToUserDto")
+    ItemEntity itemDtoToItemEntity(ItemDto itemDto);
+
+    // Mapping from Entity to DTO
+    @Mapping(source = "userDto", target = "userId", qualifiedByName = "userToUserId")
+    ItemDto itemEntityToItemDto(ItemEntity itemEntity);
+
+    // Helper method to convert userId to UserEntity
+    @Named("userIdToUserDto")
+    default UserEntity userIdToUserDto(Long userId) {
+        if (userId == null) {
+            return null;
+        }
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+        return user;
     }
 
 }

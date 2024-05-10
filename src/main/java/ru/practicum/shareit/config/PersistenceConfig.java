@@ -17,8 +17,8 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 @Configuration
-@EnableTransactionManagement
 @RequiredArgsConstructor
+@EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ru.practicum")
 @PropertySource(value = "classpath:application.properties")
 public class PersistenceConfig {
@@ -64,5 +64,6 @@ public class PersistenceConfig {
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;
     }
+
 
 }

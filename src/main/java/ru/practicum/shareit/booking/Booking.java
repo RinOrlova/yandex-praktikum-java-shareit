@@ -5,7 +5,7 @@ import lombok.NonNull;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.user.User;
+import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;

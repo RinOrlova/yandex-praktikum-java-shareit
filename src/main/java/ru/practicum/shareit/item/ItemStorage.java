@@ -15,5 +15,7 @@ public interface ItemStorage {
 
     Optional<ItemDto> getById(Long id);
 
+    Collection<ItemDto> getAllByUserId(Long ownerId);
+
     Collection<ItemDto> search(String text);
 }

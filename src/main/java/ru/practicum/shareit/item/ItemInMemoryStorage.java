@@ -61,6 +61,13 @@ public class ItemInMemoryStorage implements ItemStorage {
     }
 
     @Override
+    public Collection<ItemDto> getAllByUserId(Long ownerId) {
+        return itemMap.values().stream()
+                .filter(itemDto -> itemDto.getUserId().equals(ownerId))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Collection<ItemDto> search(String text) {
         String textLowerCase = text.toLowerCase();
         return itemMap.values().stream()
