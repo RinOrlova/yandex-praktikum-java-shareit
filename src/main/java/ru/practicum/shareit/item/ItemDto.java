@@ -21,5 +21,5 @@ public class ItemDto {
     @NonNull
     Long userId;
     @Nullable
-    Integer requestId;
+    Long requestId;
 }

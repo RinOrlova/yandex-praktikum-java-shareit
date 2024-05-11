@@ -88,8 +88,8 @@ public class ItemServiceImpl implements ItemService {
         if (item.getAvailable() != null) {
             itemByIdBuilder.available(item.getAvailable());
         }
-        if (item.getRequest() != null) {
-            itemByIdBuilder.request(item.getRequest());
+        if (item.getRequestId() != null) {
+            itemByIdBuilder.requestId(item.getRequestId());
         }
         return itemByIdBuilder.build();
     }

@@ -18,6 +18,6 @@ public class Item {
     @NotBlank String description;
     @NotNull Boolean available;
     @Nullable
-    ItemRequest request;
+    Long requestId;
 
 }
