@@ -1,9 +1,14 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.mapper;
 
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import ru.practicum.shareit.booking.data.BookingEntity;
+import ru.practicum.shareit.item.data.ItemEntity;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.model.ItemDto;
+import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.data.UserEntity;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
@@ -36,6 +41,11 @@ public interface ItemMapper {
         UserEntity user = new UserEntity();
         user.setId(userId);
         return user;
+    }
+
+    @Named("requestToRequestId")
+    default Long requestToRequestId(ItemRequest itemRequest) {
+        return itemRequest == null ? null : itemRequest.getId();
     }
 
 }

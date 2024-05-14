@@ -1,10 +1,12 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.ApiPathConstants;
+import ru.practicum.shareit.item.service.ItemService;
+import ru.practicum.shareit.item.model.Item;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -17,17 +19,16 @@ import java.util.Collection;
 @RequestMapping(ApiPathConstants.ITEM_PATH)
 public class ItemController {
 
-    private static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
     private final ItemService itemService;
 
     @PostMapping
-    public Item add(@RequestHeader(value = X_SHARER_USER_ID) Long userId,
+    public Item add(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
                     @Valid @RequestBody Item item) {
         return itemService.add(item, userId);
     }
 
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
-    public Item update(@RequestHeader(value = X_SHARER_USER_ID) Long userId,
+    public Item update(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
                        @PathVariable @Positive Long id,
                        @RequestBody Item item) {
         return itemService.update(item, id, userId);
@@ -39,7 +40,7 @@ public class ItemController {
     }
 
     @GetMapping
-    public Collection<Item> getAllItems(@RequestHeader(value = X_SHARER_USER_ID) Long userId) {
+    public Collection<Item> getAllItems(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return itemService.getItems(userId);
     }
 

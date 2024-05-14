@@ -1,9 +1,7 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.data;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.user.data.UserEntity;
 import javax.persistence.*;
 

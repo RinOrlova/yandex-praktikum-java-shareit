@@ -1,12 +1,9 @@
-package ru.practicum.shareit.booking;
+package ru.practicum.shareit.booking.data;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
-import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.booking.Status;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity

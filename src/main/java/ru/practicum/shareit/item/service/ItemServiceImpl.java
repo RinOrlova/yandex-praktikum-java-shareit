@@ -1,4 +1,4 @@
-package ru.practicum.shareit.item;
+package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.ItemNotFoundException;
+import ru.practicum.shareit.item.mapper.ItemMapper;
+import ru.practicum.shareit.item.data.ItemStorage;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collection;
