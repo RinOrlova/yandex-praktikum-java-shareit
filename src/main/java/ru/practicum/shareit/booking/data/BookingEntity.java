@@ -22,10 +22,12 @@ public class BookingEntity {
     private LocalDateTime start;
     @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
-    @Column(name = "item_id", nullable = false)
-    private Long itemId;
-    @Column(name = "booker_id", nullable = false)
-    private Long bookerId;
+    @ManyToOne
+    @JoinColumn(name = "item_id", nullable = false)
+    private ItemEntity item;
+    @ManyToOne
+    @JoinColumn(name = "booker_id", nullable = false)
+    private UserEntity booker;
     @Column(name = "status", nullable = false)
     private Status status;
 }

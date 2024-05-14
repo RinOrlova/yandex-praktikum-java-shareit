@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
 
-    List<ItemEntity> getAllByNameContainsIgnoreCase(String name);
+    List<ItemEntity> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
 
     List<ItemEntity> getAllByUserDto(UserEntity userDto);
 

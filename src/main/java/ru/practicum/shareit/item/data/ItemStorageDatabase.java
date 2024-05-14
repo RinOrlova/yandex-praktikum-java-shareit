@@ -60,7 +60,7 @@ public class ItemStorageDatabase implements ItemStorage {
 
     @Override
     public Collection<ItemDto> search(String text) {
-        return itemRepository.getAllByNameContainsIgnoreCase(text)
+        return itemRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(text, text)
                 .stream()
                 .map(itemMapper::itemEntityToItemDto)
                 .collect(Collectors.toList());

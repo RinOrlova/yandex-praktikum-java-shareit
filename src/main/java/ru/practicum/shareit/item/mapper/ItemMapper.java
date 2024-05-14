@@ -15,30 +15,30 @@ import ru.practicum.shareit.user.mapper.UserMapper;
 public interface ItemMapper {
     Item itemDto2Item(ItemDto itemDto);
 
-    @Mapping(target = "userId", source = "userId")
+    @Mapping(target = "ownerId", source = "ownerId")
     @Mapping(target = "available", source = "item.available", defaultValue = "false")
-    ItemDto item2ItemDto(Item item, Long userId);
+    ItemDto item2ItemDto(Item item, Long ownerId);
 
-    default ItemDto mapContext(Item item, @Context Long userId) {
-        return item2ItemDto(item, userId);
+    default ItemDto mapContext(Item item, @Context Long ownerId) {
+        return item2ItemDto(item, ownerId);
     }
 
     // Mapping from DTO to Entity
-    @Mapping(source = "userId", target = "userDto", qualifiedByName = "userIdToUserDto")
+    @Mapping(source = "ownerId", target = "userDto", qualifiedByName = "userIdToUserDto")
     ItemEntity itemDtoToItemEntity(ItemDto itemDto);
 
     // Mapping from Entity to DTO
-    @Mapping(source = "userDto", target = "userId", qualifiedByName = "userToUserId")
+    @Mapping(source = "userDto", target = "ownerId", qualifiedByName = "userToUserId")
     ItemDto itemEntityToItemDto(ItemEntity itemEntity);
 
     // Helper method to convert userId to UserEntity
     @Named("userIdToUserDto")
-    default UserEntity userIdToUserDto(Long userId) {
-        if (userId == null) {
+    default UserEntity userIdToUserDto(Long ownerId) {
+        if (ownerId == null) {
             return null;
         }
         UserEntity user = new UserEntity();
-        user.setId(userId);
+        user.setId(ownerId);
         return user;
     }
 
@@ -46,5 +46,11 @@ public interface ItemMapper {
     default Long requestToRequestId(ItemRequest itemRequest) {
         return itemRequest == null ? null : itemRequest.getId();
     }
+
+    @Named("itemToItemId")
+    default Long itemToItemId(ItemEntity item) {
+        return item == null ? null : item.getId();
+    }
+
 
 }

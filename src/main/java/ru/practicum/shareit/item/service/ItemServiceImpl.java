@@ -39,7 +39,7 @@ public class ItemServiceImpl implements ItemService {
     public Item update(Item item, Long id, Long userId) {
         userService.getUserById(userId);
         ItemDto itemToCheck = itemStorage.getById(id).get();
-        if (itemToCheck.getId().equals(userId)) {
+        if (itemToCheck.getOwnerId().equals(userId)) {
             Item itemToStore = recreateItem(item, id);
             ItemDto itemDto = itemMapper.item2ItemDto(itemToStore, userId);
             ItemDto itemFromStorage = itemStorage.update(itemDto);
@@ -58,7 +58,7 @@ public class ItemServiceImpl implements ItemService {
         userService.getUserById(userId);
         Collection<ItemDto> itemsFromStorage = itemStorage.getAll();
         return itemsFromStorage.stream()
-                .filter(itemDto -> itemDto.getId().equals(userId))
+                .filter(itemDto -> itemDto.getOwnerId().equals(userId))
                 .map(itemMapper::itemDto2Item)
                 .collect(Collectors.toList());
     }
@@ -73,11 +73,20 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Collection<Item> search(String text) {
         if (StringUtils.hasText(text)) {
-            return itemStorage.search(text).stream()
+            return itemStorage.search(text)
+                    .stream()
+                    .filter(ItemDto::isAvailable)
                     .map(itemMapper::itemDto2Item)
                     .collect(Collectors.toList());
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public Long getOwnerForItemByItemId(Long itemId)    {
+        ItemDto itemFromStorage = itemStorage.getById(itemId)
+                .orElseThrow(() -> new ItemNotFoundException(itemId));
+        return itemFromStorage.getOwnerId();
     }
 
     private Item recreateItem(Item item, Long id) {

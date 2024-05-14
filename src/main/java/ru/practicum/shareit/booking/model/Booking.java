@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 import ru.practicum.shareit.booking.Status;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;

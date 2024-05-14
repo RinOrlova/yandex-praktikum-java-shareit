@@ -17,21 +17,29 @@ public class BookingStorageDatabase implements BookingStorage {
 
     @Override
     public BookingDto add(BookingDto bookingDto) {
-        return null;
+        BookingEntity bookingEntity = bookingMapper.bookingDto2BookingEntity(bookingDto);
+        BookingEntity savedEntity = bookingRepository.save(bookingEntity);
+        return bookingMapper.bookingEntity2BookingDto(savedEntity);
     }
 
     @Override
     public BookingDto update(BookingDto bookingDto) {
-        return null;
+        BookingEntity bookingEntity = bookingMapper.bookingDto2BookingEntity(bookingDto);
+        BookingEntity savedEntity = bookingRepository.save(bookingEntity);
+        return bookingMapper.bookingEntity2BookingDto(savedEntity);
     }
 
     @Override
     public Collection<BookingDto> getAll() {
-        return null;
+        return bookingRepository.findAll()
+                .stream()
+                .map(bookingMapper::bookingEntity2BookingDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<BookingDto> getById(Long id) {
-        return Optional.empty();
+        return bookingRepository.findById(id)
+                .map(bookingMapper::bookingEntity2BookingDto);
     }
 }

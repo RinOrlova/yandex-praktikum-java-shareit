@@ -1,6 +1,5 @@
 package ru.practicum.shareit.booking.controller;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -32,14 +31,14 @@ public class BookingController {
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
     public Booking updateBookingStatus(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
                                        @PathVariable @Positive Long bookingId,
-                                       @RequestParam("isApproved") @NonNull boolean isApproved) {
+                                       @RequestParam("isApproved") boolean isApproved) {
         return bookingService.updateBooking(userId, bookingId, isApproved);
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
     public Booking getBookingById(@PathVariable @Positive Long bookingId,
                                   @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
-        return bookingService.getBookingById(bookingId);
+        return bookingService.getBookingById(bookingId, userId);
     }
 
     @GetMapping
@@ -51,6 +50,6 @@ public class BookingController {
     @GetMapping(ApiPathConstants.OWNER_PATH)
     public Collection<Booking> getBookingsByOwner(@RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId,
                                                   @RequestParam(value = "state", defaultValue = "ALL", required = false) State state) {
-        return bookingService.getBookingsByOwnerId(ownerId, state);
+        return bookingService.getBookingsByOwnerId(userId, state);
     }
 }
