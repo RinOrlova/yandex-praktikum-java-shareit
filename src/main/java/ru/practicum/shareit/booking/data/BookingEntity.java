@@ -1,7 +1,10 @@
 package ru.practicum.shareit.booking.data;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.item.data.ItemEntity;
+import ru.practicum.shareit.user.data.UserEntity;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

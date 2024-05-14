@@ -48,8 +48,8 @@ public class BookingController {
         return bookingService.getBookingsByUser(userId, state);
     }
 
-    @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public Collection<Booking> getBookingsByOwner(@PathVariable @Positive Long ownerId,
+    @GetMapping(ApiPathConstants.OWNER_PATH)
+    public Collection<Booking> getBookingsByOwner(@RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId,
                                                   @RequestParam(value = "state", defaultValue = "ALL", required = false) State state) {
         return bookingService.getBookingsByOwnerId(ownerId, state);
     }

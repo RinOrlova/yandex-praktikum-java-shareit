@@ -19,7 +19,7 @@ public class ItemDto {
     String description;
     boolean available;
     @NonNull
-    Long userId;
+    Long ownerId;
     @Nullable
     Long requestId;
 }

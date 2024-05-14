@@ -1,9 +1,9 @@
 package ru.practicum.shareit.item.model;
 
 import lombok.Builder;
+import lombok.NonNull;
 import lombok.Value;
 import org.springframework.lang.Nullable;
-import ru.practicum.shareit.request.ItemRequest;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

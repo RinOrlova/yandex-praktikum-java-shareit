@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.ItemNotFoundException;
-import ru.practicum.shareit.item.data.ItemStorage;
 import ru.practicum.shareit.item.model.ItemDto;
 
 import java.util.*;
@@ -65,7 +64,7 @@ public class ItemInMemoryStorage implements ItemStorage {
     @Override
     public Collection<ItemDto> getAllByUserId(Long ownerId) {
         return itemMap.values().stream()
-                .filter(itemDto -> itemDto.getUserId().equals(ownerId))
+                .filter(itemDto -> itemDto.getOwnerId().equals(ownerId))
                 .collect(Collectors.toList());
     }
 

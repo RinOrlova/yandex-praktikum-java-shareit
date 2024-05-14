@@ -5,9 +5,8 @@ import lombok.NonNull;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 import ru.practicum.shareit.booking.Status;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.user.model.User;
 
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -16,9 +15,9 @@ import java.time.LocalDateTime;
 public class BookingDto {
     @Nullable
     Long id;
-    @NonNull LocalDateTime start;
-    @NonNull LocalDateTime end;
-    @NonNull Item item;
-    @NonNull User booker;
+    @NonNull @FutureOrPresent LocalDateTime start;
+    @NonNull @FutureOrPresent LocalDateTime end;
+    @NonNull Long itemId;
+    @NonNull Long bookerId;
     @NotNull Status status;
 }

@@ -2,8 +2,8 @@ package ru.practicum.shareit.user.data;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.practicum.shareit.user.model.UserDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
+import ru.practicum.shareit.user.model.UserDto;
 
 import java.util.Collection;
 import java.util.Optional;

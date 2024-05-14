@@ -2,9 +2,9 @@ package ru.practicum.shareit.user.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
-import ru.practicum.shareit.user.model.UserDto;
 import ru.practicum.shareit.user.data.UserEntity;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.model.UserDto;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
