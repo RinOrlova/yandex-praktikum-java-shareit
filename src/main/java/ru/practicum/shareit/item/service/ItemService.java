@@ -20,4 +20,6 @@ public interface ItemService {
     Collection<Item> search(String text);
 
     Long getOwnerForItemByItemId(Long itemId);
+
+    boolean isItemAvailable(Long itemId);
 }

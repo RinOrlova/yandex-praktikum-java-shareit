@@ -29,5 +29,6 @@ public class BookingEntity {
     @JoinColumn(name = "booker_id", nullable = false)
     private UserEntity booker;
     @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status;
 }

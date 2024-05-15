@@ -2,6 +2,7 @@ package ru.practicum.shareit.booking.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.ApiPathConstants;
@@ -30,26 +31,26 @@ public class BookingController {
 
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
     public Booking updateBookingStatus(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                                       @PathVariable @Positive Long bookingId,
-                                       @RequestParam("isApproved") boolean isApproved) {
-        return bookingService.updateBooking(userId, bookingId, isApproved);
+                                       @PathVariable @Positive Long id,
+                                       @RequestParam("approved") boolean isApproved) {
+        return bookingService.updateBooking(userId, id, isApproved);
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public Booking getBookingById(@PathVariable @Positive Long bookingId,
+    public Booking getBookingById(@PathVariable @Positive Long id,
                                   @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
-        return bookingService.getBookingById(bookingId, userId);
+        return bookingService.getBookingById(id, userId);
     }
 
     @GetMapping
     public Collection<Booking> getBookingsByUser(@RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                                                 @RequestParam(value = "state", defaultValue = "ALL", required = false) State state) {
-        return bookingService.getBookingsByUser(userId, state);
+                                                 @RequestParam(value = "state", defaultValue = "ALL", required = false) String state) {
+        return bookingService.getBookingsByUser(userId, State.valueOf(state));
     }
 
     @GetMapping(ApiPathConstants.OWNER_PATH)
     public Collection<Booking> getBookingsByOwner(@RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                                                  @RequestParam(value = "state", defaultValue = "ALL", required = false) State state) {
-        return bookingService.getBookingsByOwnerId(userId, state);
+                                                  @RequestParam(value = "state", defaultValue = "ALL", required = false) String state) {
+        return bookingService.getBookingsByOwnerId(userId, State.valueOf(state));
     }
 }

@@ -89,6 +89,13 @@ public class ItemServiceImpl implements ItemService {
         return itemFromStorage.getOwnerId();
     }
 
+    @Override
+    public boolean isItemAvailable(Long itemId){
+        return itemStorage.getById(itemId)
+                .map(ItemDto::isAvailable)
+                .orElse(false);
+    }
+
     private Item recreateItem(Item item, Long id) {
         Item itemById = getItemById(id);
         Item.ItemBuilder itemByIdBuilder = itemById.toBuilder();

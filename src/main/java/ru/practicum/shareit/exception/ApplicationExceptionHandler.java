@@ -14,6 +14,12 @@ public class ApplicationExceptionHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleItemUnavailableException(final ItemUnavailableException exception) {
+        return new ErrorResponse("Item unavailable.", exception.getMessage());
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFoundException(final AbstractNotFoundException exception) {
         return new ErrorResponse("Entity not found", exception.getMessage());
