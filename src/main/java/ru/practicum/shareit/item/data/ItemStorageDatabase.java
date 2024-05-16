@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -15,18 +16,19 @@ import java.util.stream.Collectors;
 public class ItemStorageDatabase implements ItemStorage {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
+    private final UserMapper userMapper;
 
     @Override
     public ItemDto add(ItemDto itemDto) {
         ItemEntity entity = itemMapper.itemDtoToItemEntity(itemDto);
-        ItemEntity savedEntity = itemRepository.save(entity);
+        ItemEntity savedEntity = itemRepository.saveAndFlush(entity);
         return itemMapper.itemEntityToItemDto(savedEntity);
     }
 
     @Override
     public ItemDto update(ItemDto itemDto) {
         ItemEntity entity = itemMapper.itemDtoToItemEntity(itemDto);
-        ItemEntity savedEntity = itemRepository.save(entity);
+        ItemEntity savedEntity = itemRepository.saveAndFlush(entity);
         return itemMapper.itemEntityToItemDto(savedEntity);
     }
 
@@ -51,8 +53,8 @@ public class ItemStorageDatabase implements ItemStorage {
 
     @Override
     public Collection<ItemDto> getAllByUserId(Long ownerId) {
-        UserEntity userEntity = itemMapper.userIdToUserDto(ownerId);
-        return itemRepository.getAllByUserDto(userEntity)
+        UserEntity userEntity = userMapper.userIdToUserDto(ownerId);
+        return itemRepository.getAllByUserEntity(userEntity)
                 .stream()
                 .map(itemMapper::itemEntityToItemDto)
                 .collect(Collectors.toList());
@@ -64,5 +66,10 @@ public class ItemStorageDatabase implements ItemStorage {
                 .stream()
                 .map(itemMapper::itemEntityToItemDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean userHasBookedItem(Long itemId, Long userId){
+        return itemRepository.existsByItemIdAndUserIdWithPastBookings(itemId, userId);
     }
 }

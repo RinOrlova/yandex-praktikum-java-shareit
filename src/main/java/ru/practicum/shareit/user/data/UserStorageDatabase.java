@@ -18,14 +18,14 @@ public class UserStorageDatabase implements UserStorage {
     @Override
     public UserDto add(UserDto userDto) {
         UserEntity userEntity = userMapper.userDto2UserEntity(userDto);
-        UserEntity savedEntity = userRepository.save(userEntity);
+        UserEntity savedEntity = userRepository.saveAndFlush(userEntity);
         return userMapper.userEntity2UserDto(savedEntity);
     }
 
     @Override
     public UserDto update(UserDto userDto) {
         UserEntity userEntity = userMapper.userDto2UserEntity(userDto);
-        UserEntity savedEntity = userRepository.save(userEntity);
+        UserEntity savedEntity = userRepository.saveAndFlush(userEntity);
         return userMapper.userEntity2UserDto(savedEntity);
     }
 

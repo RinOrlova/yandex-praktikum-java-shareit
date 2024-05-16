@@ -2,7 +2,9 @@ package ru.practicum.shareit.booking.model;
 
 import lombok.Builder;
 import lombok.NonNull;
+import lombok.Setter;
 import lombok.Value;
+import lombok.experimental.NonFinal;
 import org.springframework.lang.Nullable;
 import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.item.model.ItemDto;
@@ -19,8 +21,12 @@ public class BookingDto {
     Long id;
     @NonNull @FutureOrPresent LocalDateTime start;
     @NonNull @FutureOrPresent LocalDateTime end;
-    @Nullable ItemDto item;
-    @Nullable UserDto booker;
+    @NonFinal
+    @Setter
+    @Nullable
+    ItemDto item;
+    @Nullable
+    UserDto booker;
     @Builder.Default
     @NotNull Status status = Status.WAITING;
 }

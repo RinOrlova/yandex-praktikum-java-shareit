@@ -1,5 +1,7 @@
 package ru.practicum.shareit.item.service;
 
+import ru.practicum.shareit.item.model.CommentRequest;
+import ru.practicum.shareit.item.model.CommentResponse;
 import ru.practicum.shareit.item.model.Item;
 
 import java.util.Collection;
@@ -21,5 +23,7 @@ public interface ItemService {
 
     Long getOwnerForItemByItemId(Long itemId);
 
-    boolean isItemAvailable(Long itemId);
+    Item getItemByIdForUser(Long id, Long userId);
+
+    CommentResponse addComment(CommentRequest commentRequest, Long id, Long userId);
 }

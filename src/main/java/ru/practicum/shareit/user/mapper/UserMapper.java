@@ -21,4 +21,20 @@ public interface UserMapper {
     default Long userToUserId(UserEntity user) {
         return user == null ? null : user.getId();
     }
+
+    @Named("userDtoToUserId")
+    default Long userDtoToUserId(UserDto user) {
+        return user == null ? null : user.getId();
+    }
+
+    // Helper method to convert userId to UserEntity
+    @Named("userIdToUserDto")
+    default UserEntity userIdToUserDto(Long ownerId) {
+        if (ownerId == null) {
+            return null;
+        }
+        UserEntity user = new UserEntity();
+        user.setId(ownerId);
+        return user;
+    }
 }

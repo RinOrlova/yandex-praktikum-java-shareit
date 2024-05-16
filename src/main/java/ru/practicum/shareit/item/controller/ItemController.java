@@ -5,10 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.ApiPathConstants;
+import ru.practicum.shareit.item.model.CommentRequest;
+import ru.practicum.shareit.item.model.CommentResponse;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.Collection;
 
@@ -25,6 +28,14 @@ public class ItemController {
     public Item add(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
                     @Valid @RequestBody Item item) {
         return itemService.add(item, userId);
+    }
+
+    @PostMapping(ApiPathConstants.COMMENT_PATH)
+    public CommentResponse addComment(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
+                                      @PathVariable @Positive Long id,
+                                      @RequestBody @NotBlank String requestedText) {
+        CommentRequest commentRequest = CommentRequest.builder().text(requestedText).build();
+        return itemService.addComment(commentRequest, id, userId);
     }
 
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
@@ -45,8 +56,9 @@ public class ItemController {
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public Item getItemById(@PathVariable @Positive Long id) {
-        return itemService.getItemById(id);
+    public Item getItemById(@PathVariable @Positive Long id,
+    @RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId) {
+        return itemService.getItemByIdForUser(id, userId);
     }
 
     @GetMapping(ApiPathConstants.SEARCH_PATH)

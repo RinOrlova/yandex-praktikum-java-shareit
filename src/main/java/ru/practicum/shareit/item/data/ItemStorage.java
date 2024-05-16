@@ -20,4 +20,6 @@ public interface ItemStorage {
     Collection<ItemDto> getAllByUserId(Long ownerId);
 
     Collection<ItemDto> search(String text);
+
+    boolean userHasBookedItem(Long itemId, Long userId);
 }

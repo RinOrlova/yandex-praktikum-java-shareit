@@ -78,6 +78,11 @@ public class ItemInMemoryStorage implements ItemStorage {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public boolean userHasBookedItem(Long itemId, Long userId) {
+        return false;
+    }
+
     private Long getNextValidId() {
         nextId++;
         return nextId;

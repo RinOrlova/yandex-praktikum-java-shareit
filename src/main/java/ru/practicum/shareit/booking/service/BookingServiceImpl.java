@@ -8,17 +8,23 @@ import ru.practicum.shareit.booking.State;
 import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.booking.data.BookingStorage;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
-import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.model.BookingDto;
+import ru.practicum.shareit.booking.model.BookingRequest;
+import ru.practicum.shareit.booking.model.BookingResponse;
 import ru.practicum.shareit.exception.BookingNotFoundException;
 import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.ItemUnavailableException;
+import ru.practicum.shareit.exception.UnableToChangeBookingStatusException;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.model.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,20 +40,15 @@ public class BookingServiceImpl implements BookingService {
     private final BookingFilter bookingFilter;
 
     @Override
-    public Booking addBooking(Booking booking, Long userId) {
-        User user = checkUser(userId);
-        if (!getItemOwner(booking).equals(userId)) {
-            Long itemId = booking.getItemId();
+    public BookingResponse addBooking(BookingRequest bookingRequest, Long userId) {
+        User user = getUserIfPresent(userId);
+        Long itemId = bookingRequest.getItemId();
+        if (!getItemOwner(itemId).equals(userId)) {
             Item item = itemService.getItemById(itemId);
             if (Boolean.TRUE.equals(item.getAvailable())) {
-                Booking recreatedBooking = booking.toBuilder()
-                        .booker(user)
-                        .item(item)
-                        .build();
-
-                BookingDto bookingDto = bookingMapper.booking2BookingDto(recreatedBooking);
+                BookingDto bookingDto = bookingMapper.bookingRequestToBookingDto(bookingRequest, userId);
                 BookingDto bookingFromStorage = bookingStorage.add(bookingDto);
-                return bookingMapper.bookingDto2Booking(bookingFromStorage);
+                return bookingMapper.bookingDtoToBookingResponse(bookingFromStorage);
             }
             throw new ItemUnavailableException(itemId);
         }
@@ -55,15 +56,18 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking updateBooking(Long userId, Long bookingId, boolean isApproved) {
-        checkUser(userId);
-        BookingDto bookingDto = bookingStorage.getById(bookingId)
-                .orElseThrow(() -> new BookingNotFoundException(bookingId));
-        if (isBookingOwner(bookingDto, userId)) {
-            BookingDto updatedBookingDto = bookingDto.toBuilder()
-                    .status(getCorrespondingStatus(isApproved))
-                    .build();
-            bookingStorage.update(updatedBookingDto);
+    public BookingResponse updateBooking(Long userId, Long bookingId, boolean isApproved) {
+        getUserIfPresent(userId);
+        BookingDto bookingDto = getBookingDtoById(bookingId);
+        if (isItemOwner(bookingDto, userId)) {
+            if(bookingDto.getStatus() != Status.APPROVED) {
+                BookingDto updatedBookingDto = bookingDto.toBuilder()
+                        .status(getCorrespondingStatus(isApproved))
+                        .build();
+                BookingDto bookingFromStorage = bookingStorage.update(updatedBookingDto);
+                return bookingMapper.bookingDtoToBookingResponse(bookingFromStorage);
+            }
+             throw new UnableToChangeBookingStatusException();
         }
         throw new ForbiddenException();
 
@@ -76,52 +80,65 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Booking getBookingById(Long bookingId, Long userId) {
-        checkUser(userId);
-        BookingDto bookingDto = bookingStorage.getById(bookingId)
-                .orElseThrow(() -> new BookingNotFoundException(bookingId));
-        checkItem(bookingDto.getItem().getId());
-        Booking booking = bookingMapper.bookingDto2Booking(bookingDto);
-        if (bookingDto.getBooker().equals(userId) || getItemOwner(booking).equals(userId)) {
-            return booking;
+    public BookingResponse getBookingByIdAndUserId(Long bookingId, Long userId) {
+        getUserIfPresent(userId);
+        BookingDto bookingDto = getBookingDtoById(bookingId);
+        if (isBookingOwner(bookingDto, userId) || isItemOwner(bookingDto, userId)) {
+            return bookingMapper.bookingDtoToBookingResponse(bookingDto);
         }
         throw new ForbiddenException();
     }
 
+    private BookingDto getBookingDtoById(Long bookingId) {
+        return bookingStorage.getById(bookingId)
+                .orElseThrow(() -> new BookingNotFoundException(bookingId));
+    }
+
     @Override
-    public Collection<Booking> getBookingsByUser(Long userId, State state) {
-        checkUser(userId);
+    public Collection<BookingResponse> getBookingsByUser(Long userId, State state) {
+        getUserIfPresent(userId);
         return bookingStorage.getAll().stream()
-                .filter(bookingDto -> bookingDto.getBooker().equals(userId))
+                .filter(bookingDto -> isBookingOwner(bookingDto, userId))
                 .filter(bookingDto -> bookingFilter.isValidBooking(bookingDto, state))
-                .map(bookingMapper::bookingDto2Booking)
+                .map(bookingMapper::bookingDtoToBookingResponse)
+                .sorted(Comparator.comparing(BookingResponse::getStart).reversed())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Collection<Booking> getBookingsByOwnerId(Long ownerId, State state) {
-        checkUser(ownerId);
+    public Collection<BookingResponse> getBookingsByOwnerId(Long bookerId, State state) {
+        getUserIfPresent(bookerId);
         return bookingStorage.getAll().stream()
-                .filter(bookingDto -> isBookingOwner(bookingDto, ownerId))
+                .filter(bookingDto -> isItemOwner(bookingDto, bookerId))
                 .filter(bookingDto -> bookingFilter.isValidBooking(bookingDto, state))
-                .map(bookingMapper::bookingDto2Booking)
+                .map(bookingMapper::bookingDtoToBookingResponse)
+                .sorted(Comparator.comparing(BookingResponse::getStart).reversed())
                 .collect(Collectors.toList());
     }
 
-    private boolean isBookingOwner(BookingDto bookingDto, Long ownerId) {
-        Long itemOwnerId = bookingDto.getItem().getOwnerId();
-        return itemOwnerId.equals(ownerId);
+    private boolean isBookingOwner(BookingDto bookingDto, Long bookerId) {
+        return Optional.ofNullable(bookingDto.getBooker())
+                .map(UserDto::getId)
+                .map(bookerId::equals)
+                .orElse(false);
     }
 
-    private User checkUser(Long id) {
+    private boolean isItemOwner(BookingDto bookingDto, Long ownerId) {
+        return Optional.ofNullable(bookingDto.getItem())
+                .map(ItemDto::getOwnerId)
+                .map(ownerId::equals)
+                .orElse(false);
+    }
+
+    private User getUserIfPresent(Long id) {
         return userService.getUserById(id);
     }
 
-    private Item checkItem(Long id) {
+    private Item getItemIfPresent(Long id) {
         return itemService.getItemById(id);
     }
 
-    private Long getItemOwner(Booking booking) {
-        return itemService.getOwnerForItemByItemId(booking.getItemId());
+    private Long getItemOwner(Long itemId) {
+        return itemService.getOwnerForItemByItemId(itemId);
     }
 }

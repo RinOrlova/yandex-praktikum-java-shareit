@@ -5,16 +5,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import ru.practicum.shareit.exception.AddCommentForbiddenException;
 import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.ItemNotFoundException;
+import ru.practicum.shareit.item.data.CommentStorage;
 import ru.practicum.shareit.item.data.ItemStorage;
+import ru.practicum.shareit.item.mapper.CommentMapper;
 import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.model.ItemDto;
+import ru.practicum.shareit.item.model.*;
 import ru.practicum.shareit.user.service.UserService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,8 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
     @Qualifier("itemStorageDatabase")
     private final ItemStorage itemStorage;
+    private final CommentStorage commentStorage;
+    private final CommentMapper commentMapper;
     private final ItemMapper itemMapper;
     private final UserService userService;
 
@@ -60,6 +65,7 @@ public class ItemServiceImpl implements ItemService {
         return itemsFromStorage.stream()
                 .filter(itemDto -> itemDto.getOwnerId().equals(userId))
                 .map(itemMapper::itemDto2Item)
+                .sorted(Comparator.comparing(Item::getId))
                 .collect(Collectors.toList());
     }
 
@@ -83,18 +89,38 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Long getOwnerForItemByItemId(Long itemId)    {
+    public Item getItemByIdForUser(Long itemId, Long userId) {
+        ItemDto itemFromStorage = itemStorage.getById(itemId)
+                .orElseThrow(() -> new ItemNotFoundException(itemId));
+        if (itemFromStorage.getOwnerId().equals(userId)) {
+            return itemMapper.itemDto2Item(itemFromStorage);
+        }
+        Item item = itemMapper.itemDto2Item(itemFromStorage);
+        return item.toBuilder()
+                .lastBooking(null)
+                .nextBooking(null)
+                .build();
+    }
+
+    @Override
+    public Long getOwnerForItemByItemId(Long itemId) {
         ItemDto itemFromStorage = itemStorage.getById(itemId)
                 .orElseThrow(() -> new ItemNotFoundException(itemId));
         return itemFromStorage.getOwnerId();
     }
 
     @Override
-    public boolean isItemAvailable(Long itemId){
-        return itemStorage.getById(itemId)
-                .map(ItemDto::isAvailable)
-                .orElse(false);
+    public CommentResponse addComment(CommentRequest commentRequest, Long itemId, Long userId) {
+        userService.getUserById(userId);
+        boolean usedHasBookedItem = itemStorage.userHasBookedItem(itemId, userId);
+        if (usedHasBookedItem) {
+            CommentDto commentDto = commentMapper.commentRequestToCommentDto(commentRequest, itemId, userId);
+            CommentDto commentFromStorage = commentStorage.addComment(commentDto);
+            return commentMapper.commentDtoToCommentResponse(commentFromStorage);
+        }
+        throw new AddCommentForbiddenException();
     }
+
 
     private Item recreateItem(Item item, Long id) {
         Item itemById = getItemById(id);

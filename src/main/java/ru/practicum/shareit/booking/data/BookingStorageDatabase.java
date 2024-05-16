@@ -2,8 +2,10 @@ package ru.practicum.shareit.booking.data;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.BookingDto;
+import ru.practicum.shareit.exception.BookingNotFoundException;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -16,17 +18,29 @@ public class BookingStorageDatabase implements BookingStorage {
     private final BookingMapper bookingMapper;
 
     @Override
+    @Transactional
     public BookingDto add(BookingDto bookingDto) {
         BookingEntity bookingEntity = bookingMapper.bookingDto2BookingEntity(bookingDto);
-        BookingEntity savedEntity = bookingRepository.save(bookingEntity);
-        return bookingMapper.bookingEntity2BookingDto(savedEntity);
+        BookingEntity savedEntity = saveEntity(bookingEntity);
+        bookingRepository.refresh(savedEntity);
+        BookingEntity bookingEntityFromStore = bookingRepository.findById(savedEntity.getId())
+                .orElseThrow(() -> new BookingNotFoundException(savedEntity.getId()));
+        return bookingMapper.bookingEntity2BookingDto(bookingEntityFromStore);
+    }
+
+    private BookingEntity saveEntity(BookingEntity bookingEntity) {
+        return bookingRepository.saveAndFlush(bookingEntity);
     }
 
     @Override
+    @Transactional
     public BookingDto update(BookingDto bookingDto) {
         BookingEntity bookingEntity = bookingMapper.bookingDto2BookingEntity(bookingDto);
-        BookingEntity savedEntity = bookingRepository.save(bookingEntity);
-        return bookingMapper.bookingEntity2BookingDto(savedEntity);
+        BookingEntity savedEntity = saveEntity(bookingEntity);
+        bookingRepository.refresh(savedEntity);
+        BookingEntity bookingEntityFromStore = bookingRepository.findById(savedEntity.getId())
+                .orElseThrow(() -> new BookingNotFoundException(savedEntity.getId()));
+        return bookingMapper.bookingEntity2BookingDto(bookingEntityFromStore);
     }
 
     @Override
