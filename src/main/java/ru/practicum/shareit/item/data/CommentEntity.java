@@ -5,7 +5,7 @@ import lombok.Setter;
 import ru.practicum.shareit.user.data.UserEntity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "comments")
@@ -24,6 +24,6 @@ public class CommentEntity {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     UserEntity userEntity;
-    @Column(name="created_at", nullable = false)
-    LocalDate created;
+    @Column(name = "created_at", nullable = false)
+    LocalDateTime created;
 }

@@ -11,7 +11,6 @@ import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import java.util.Collection;
 
@@ -33,8 +32,7 @@ public class ItemController {
     @PostMapping(ApiPathConstants.COMMENT_PATH)
     public CommentResponse addComment(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
                                       @PathVariable @Positive Long id,
-                                      @RequestBody @NotBlank String requestedText) {
-        CommentRequest commentRequest = CommentRequest.builder().text(requestedText).build();
+                                      @Valid @RequestBody CommentRequest commentRequest) {
         return itemService.addComment(commentRequest, id, userId);
     }
 
@@ -57,7 +55,7 @@ public class ItemController {
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
     public Item getItemById(@PathVariable @Positive Long id,
-    @RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId) {
+                            @RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return itemService.getItemByIdForUser(id, userId);
     }
 

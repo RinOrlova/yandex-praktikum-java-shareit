@@ -3,7 +3,6 @@ package ru.practicum.shareit.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -20,7 +19,6 @@ import java.util.Properties;
 @RequiredArgsConstructor
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "ru.practicum")
-@PropertySource(value = "classpath:application.properties")
 public class PersistenceConfig {
     private final Environment environment;
 

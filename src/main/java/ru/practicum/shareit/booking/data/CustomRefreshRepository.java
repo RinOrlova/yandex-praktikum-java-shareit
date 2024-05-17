@@ -1,6 +1,6 @@
 package ru.practicum.shareit.booking.data;
 
-public interface CustomBookingRepository {
+public interface CustomRefreshRepository {
 
     void refresh(Object o);
 }

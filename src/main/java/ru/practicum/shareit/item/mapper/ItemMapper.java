@@ -4,6 +4,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import ru.practicum.shareit.booking.Status;
 import ru.practicum.shareit.booking.data.BookingEntity;
 import ru.practicum.shareit.item.data.ItemEntity;
 import ru.practicum.shareit.item.model.BookingData;
@@ -64,7 +65,7 @@ public interface ItemMapper {
         if (bookings != null) {
             LocalDateTime now = LocalDateTime.now();
             return bookings.stream()
-                    .filter(booking -> booking.getEnd().isBefore(now))
+                    .filter(booking -> booking.getEnd().isBefore(now) || isCurrentBooking(booking, now))
                     .max(Comparator.comparing(BookingEntity::getEnd))
                     .map(this::bookingDtoToBookingData)
                     .orElse(null);
@@ -77,12 +78,22 @@ public interface ItemMapper {
         if (bookings != null) {
             LocalDateTime now = LocalDateTime.now();
             return bookings.stream()
-                    .filter(booking -> booking.getStart().isAfter(now))
+                    .filter(booking -> booking.getStatus() != Status.REJECTED)
+                    .filter(booking -> isFutureBooking(booking, now))
                     .min(Comparator.comparing(BookingEntity::getStart))
                     .map(this::bookingDtoToBookingData)
                     .orElse(null);
         }
         return null;
+    }
+
+    private static boolean isCurrentBooking(BookingEntity booking, LocalDateTime now) {
+        return booking.getStart().isBefore(now)
+                && booking.getEnd().isAfter(now);
+    }
+
+    private static boolean isFutureBooking(BookingEntity booking, LocalDateTime now) {
+        return booking.getStart().isAfter(now);
     }
 
 }

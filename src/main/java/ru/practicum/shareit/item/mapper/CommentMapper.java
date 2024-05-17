@@ -21,6 +21,7 @@ public interface CommentMapper {
 
     @Mapping(target = "itemId", source = "itemEntity", qualifiedByName = "itemEntityToItemId")
     @Mapping(target = "authorId", source = "userEntity", qualifiedByName = "userToUserId")
+    @Mapping(target = "authorName", source = "userEntity.name")
     CommentDto commentEntityToCommentDto(CommentEntity savedEntity);
 
     CommentResponse commentDtoToCommentResponse(CommentDto commentDto);
@@ -29,6 +30,7 @@ public interface CommentMapper {
     @Mapping(target = "itemId", source = "itemId")
     @Mapping(target = "authorId", source = "userId")
     @Mapping(target = "id", ignore = true)
+    @Mapping(target = "authorName", ignore = true)
     CommentDto commentRequestToCommentDto(CommentRequest commentRequest, Long itemId, Long userId);
 
     default CommentDto mapContext(CommentRequest commentRequest, @Context Long itemId, @Context Long userId) {
