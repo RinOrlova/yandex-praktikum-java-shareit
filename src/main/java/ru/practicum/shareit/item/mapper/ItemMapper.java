@@ -11,7 +11,6 @@ import ru.practicum.shareit.item.model.BookingData;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.request.ItemRequest;
-import ru.practicum.shareit.user.data.UserEntity;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
@@ -44,7 +43,6 @@ public interface ItemMapper {
     @Mapping(source = "bookings", target = "lastBooking", qualifiedByName = "findLastBooking")
     @Mapping(source = "bookings", target = "nextBooking", qualifiedByName = "findNextBooking")
     ItemDto itemEntityToItemDto(ItemEntity itemEntity);
-
 
 
     @Named("requestToRequestId")

@@ -69,7 +69,7 @@ public class ItemStorageDatabase implements ItemStorage {
     }
 
     @Override
-    public boolean userHasBookedItem(Long itemId, Long userId){
+    public boolean userHasBookedItem(Long itemId, Long userId) {
         return itemRepository.existsByItemIdAndUserIdWithPastBookings(itemId, userId);
     }
 }

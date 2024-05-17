@@ -60,14 +60,14 @@ public class BookingServiceImpl implements BookingService {
         getUserIfPresent(userId);
         BookingDto bookingDto = getBookingDtoById(bookingId);
         if (isItemOwner(bookingDto, userId)) {
-            if(bookingDto.getStatus() != Status.APPROVED) {
+            if (bookingDto.getStatus() != Status.APPROVED) {
                 BookingDto updatedBookingDto = bookingDto.toBuilder()
                         .status(getCorrespondingStatus(isApproved))
                         .build();
                 BookingDto bookingFromStorage = bookingStorage.update(updatedBookingDto);
                 return bookingMapper.bookingDtoToBookingResponse(bookingFromStorage);
             }
-             throw new UnableToChangeBookingStatusException();
+            throw new UnableToChangeBookingStatusException();
         }
         throw new ForbiddenException();
 
