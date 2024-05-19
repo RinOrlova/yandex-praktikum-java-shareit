@@ -15,15 +15,15 @@ public class CommentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
     @Column(name = "text", nullable = false, length = 1000)
-    String text;
-    @ManyToOne
+    private String text;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
-    ItemEntity itemEntity;
-    @ManyToOne
+    private ItemEntity itemEntity;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    UserEntity userEntity;
+    private UserEntity userEntity;
     @Column(name = "created_at", nullable = false)
-    LocalDateTime created;
+    private LocalDateTime created;
 }

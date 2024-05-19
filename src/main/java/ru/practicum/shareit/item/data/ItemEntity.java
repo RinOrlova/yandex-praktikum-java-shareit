@@ -24,7 +24,7 @@ public class ItemEntity {
     private String description;
     @Column(name = "is_available", nullable = false)
     private boolean available;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private UserEntity userEntity;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")

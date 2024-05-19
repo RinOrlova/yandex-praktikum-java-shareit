@@ -25,11 +25,11 @@ public class BookingEntity {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime end;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
     private ItemEntity item;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker_id", nullable = false)
     private UserEntity booker;
 

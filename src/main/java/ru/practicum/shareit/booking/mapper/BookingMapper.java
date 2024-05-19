@@ -13,7 +13,8 @@ import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.UserDto;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, ItemMapper.class})
+@Mapper(componentModel = org.mapstruct.MappingConstants.ComponentModel.SPRING,
+        uses = {UserMapper.class, ItemMapper.class})
 public interface BookingMapper {
 
     @Mapping(target = "booker", source = "bookerId", qualifiedByName = "bookerIdToUserDto")

@@ -12,7 +12,7 @@ import ru.practicum.shareit.item.model.CommentRequest;
 import ru.practicum.shareit.item.model.CommentResponse;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
-@Mapper(componentModel = "spring", uses = UserMapper.class)
+@Mapper(componentModel = org.mapstruct.MappingConstants.ComponentModel.SPRING, uses = UserMapper.class)
 public interface CommentMapper {
 
     @Mapping(target = "itemEntity", source = "itemId", qualifiedByName = "itemIdToItemEntity")

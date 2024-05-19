@@ -6,7 +6,7 @@ import ru.practicum.shareit.user.data.UserEntity;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = org.mapstruct.MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
     User userDto2User(UserDto userDto);

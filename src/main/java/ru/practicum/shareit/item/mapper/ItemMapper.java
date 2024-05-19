@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = {UserMapper.class, CommentMapper.class})
+@Mapper(componentModel = org.mapstruct.MappingConstants.ComponentModel.SPRING, uses = {UserMapper.class, CommentMapper.class})
 public interface ItemMapper {
     Item itemDto2Item(ItemDto itemDto);
 
