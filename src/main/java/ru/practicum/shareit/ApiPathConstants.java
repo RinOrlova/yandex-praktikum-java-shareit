@@ -10,6 +10,7 @@ public class ApiPathConstants {
     public static final String BY_ID_PATH = "/{id}";
     public static final String COMMENT_PATH = BY_ID_PATH + "/comment";
     public static final String SEARCH_PATH = "/search";
+    public static final String ALL_PATH = "/all";
     public static final String X_SHARER_USER_ID = "X-Sharer-User-Id";
 
 

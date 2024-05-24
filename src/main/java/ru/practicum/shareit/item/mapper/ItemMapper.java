@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.data.ItemEntity;
 import ru.practicum.shareit.item.model.BookingData;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.ItemDto;
-import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
