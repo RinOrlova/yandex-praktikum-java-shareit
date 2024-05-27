@@ -2,9 +2,12 @@ package ru.practicum.shareit.request.data;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.practicum.shareit.item.data.ItemEntity;
 import ru.practicum.shareit.user.data.UserEntity;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 @Entity
 @Getter
@@ -22,4 +25,10 @@ public class ItemRequestEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "requestor_id", nullable = false)
     private UserEntity requestor;
+
+    @OneToMany(mappedBy = "itemRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Collection<ItemEntity> itemEntities;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime created;
 }

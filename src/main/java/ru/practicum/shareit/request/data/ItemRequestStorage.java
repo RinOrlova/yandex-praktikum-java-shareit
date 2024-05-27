@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface ItemRequestStorage {
 
     ItemRequestDto add(ItemRequestDto requestDto);
-    Collection<ItemRequestDto> getOwn();
+    Collection<ItemRequestDto> getAllItemRequestsByRequestorId(Long requestorId);
     Collection<ItemRequestDto> getAll();
     Optional<ItemRequestDto> getById(Long id);
 }

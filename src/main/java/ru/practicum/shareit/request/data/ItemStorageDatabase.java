@@ -20,7 +20,8 @@ public class ItemStorageDatabase implements ItemRequestStorage {
     }
 
     @Override
-    public Collection<ItemRequestDto> getOwn() {
+    public Collection<ItemRequestDto> getAllItemRequestsByRequestorId(Long requestorId) {
+        Collection<ItemRequestEntity> itemRequestEntities = requestRepository.getItemRequestEntitiesByRequestor_Id(requestorId);
         return null;
     }
 

@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.booking.data.BookingEntity;
+import ru.practicum.shareit.request.data.ItemRequestEntity;
 import ru.practicum.shareit.user.data.UserEntity;
 
 import javax.persistence.*;
@@ -31,5 +32,8 @@ public class ItemEntity {
     private List<BookingEntity> bookings;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "itemEntity")
     private Set<CommentEntity> comments;
+    @ManyToOne
+    @JoinColumn(name = "request_id", referencedColumnName = "id")
+    private ItemRequestEntity itemRequest;
 
 }

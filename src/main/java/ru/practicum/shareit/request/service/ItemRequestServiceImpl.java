@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.model.ItemRequestResponse;
 
 import java.util.Collection;
 
@@ -12,22 +13,22 @@ import java.util.Collection;
 @Slf4j
 public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
-    public ItemRequest addRequest(ItemRequest itemRequest, Long userId) {
+    public ItemRequestResponse addRequest(ItemRequest itemRequest, Long userId) {
         return null;
     }
 
     @Override
-    public Collection<ItemRequest> getOwnRequests(Long userId) {
+    public Collection<ItemRequestResponse> getOwnRequests(Long userId) {
         return null;
     }
 
     @Override
-    public Collection<ItemRequest> getRequests(int from, int size) {
+    public Collection<ItemRequestResponse> getRequests(int from, int size) {
         return null;
     }
 
     @Override
-    public ItemRequest getRequestById(Long id) {
+    public ItemRequestResponse getRequestById(Long id) {
         return null;
     }
 }

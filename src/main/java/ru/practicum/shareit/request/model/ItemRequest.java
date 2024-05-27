@@ -1,24 +1,19 @@
 package ru.practicum.shareit.request.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
-import lombok.NonNull;
 import lombok.Value;
-import org.springframework.lang.Nullable;
-import ru.practicum.shareit.user.model.User;
+import lombok.extern.jackson.Jacksonized;
 
-import java.time.LocalDateTime;
+import javax.validation.constraints.NotBlank;
 
 @Value
 @Builder(toBuilder = true)
+@Jacksonized
 public class ItemRequest {
 
-    @Nullable
-    Long id;
-    @NonNull
+    @NotBlank
+    @JsonProperty("description")
     String description;
-    @NonNull
-    User requestor;
-    @NonNull
-    LocalDateTime created;
 
 }
