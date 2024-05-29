@@ -10,7 +10,7 @@ import ru.practicum.shareit.item.data.ItemEntity;
 import ru.practicum.shareit.item.model.BookingData;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.ItemDto;
-import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.data.ItemRequestEntity;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
@@ -34,20 +34,27 @@ public interface ItemMapper {
 
     // Mapping from DTO to Entity
     @Mapping(source = "ownerId", target = "userEntity", qualifiedByName = "userIdToUserDto")
+    @Mapping(target = "itemRequest", source = "requestId", qualifiedByName = "idToItemRequestEntity")
     @Mapping(target = "bookings", ignore = true)
     ItemEntity itemDtoToItemEntity(ItemDto itemDto);
 
     // Mapping from Entity to DTO
     @Mapping(source = "userEntity", target = "ownerId", qualifiedByName = "userToUserId")
-    @Mapping(target = "requestId", ignore = true)
+    @Mapping(target = "requestId", source = "itemRequest", qualifiedByName = "itemRequestEntityToId")
     @Mapping(source = "bookings", target = "lastBooking", qualifiedByName = "findLastBooking")
     @Mapping(source = "bookings", target = "nextBooking", qualifiedByName = "findNextBooking")
     ItemDto itemEntityToItemDto(ItemEntity itemEntity);
 
+    @Named("itemRequestEntityToId")
+    default Long itemRequestEntityToId(ItemRequestEntity itemRequestEntity) {
+        return itemRequestEntity == null ? null : itemRequestEntity.getId();
+    }
 
-    @Named("requestToRequestId")
-    default Long requestToRequestId(ItemRequest itemRequest) {
-        return itemRequest == null ? null : itemRequest.getId();
+    @Named("idToItemRequestEntity")
+    default ItemRequestEntity idToItemRequestEntity(Long id) {
+        ItemRequestEntity itemRequestEntity = new ItemRequestEntity();
+        itemRequestEntity.setId(id);
+        return itemRequestEntity;
     }
 
     @Named("itemToItemId")

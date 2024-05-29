@@ -9,6 +9,6 @@ public interface ItemRequestStorage {
 
     ItemRequestDto add(ItemRequestDto requestDto);
     Collection<ItemRequestDto> getAllItemRequestsByRequestorId(Long requestorId);
-    Collection<ItemRequestDto> getAll();
     Optional<ItemRequestDto> getById(Long id);
+    Collection<ItemRequestDto> getAllItemsFromTo(int from, int size);
 }

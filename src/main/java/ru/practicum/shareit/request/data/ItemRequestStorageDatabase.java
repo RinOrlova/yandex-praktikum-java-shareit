@@ -29,17 +29,15 @@ public class ItemRequestStorageDatabase implements ItemRequestStorage {
     @Override
     public Collection<ItemRequestDto> getAllItemRequestsByRequestorId(Long requestorId) {
         Collection<ItemRequestEntity> itemRequestEntities = requestRepository.getItemRequestEntitiesByRequestor_Id(requestorId);
-        return null;
-    }
-
-    @Override
-    public Collection<ItemRequestDto> getAll() {
-        return null;
+        return itemRequestEntities.stream()
+                .map(requestMapper::mapItemRequestEntity2ItemRequestDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Optional<ItemRequestDto> getById(Long id) {
-        return Optional.empty();
+        return requestRepository.findById(id)
+                .map(requestMapper::mapItemRequestEntity2ItemRequestDto);
     }
 
     @Override
