@@ -26,7 +26,7 @@ public class ItemRequestEntity {
     @JoinColumn(name = "requestor_id", nullable = false)
     private UserEntity requestor;
 
-    @OneToMany(mappedBy = "itemRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "itemRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private Collection<ItemEntity> itemEntities;
 
     @Column(name = "created_at", nullable = false)

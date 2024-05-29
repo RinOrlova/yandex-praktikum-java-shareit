@@ -15,6 +15,7 @@ public interface ItemRequestMapper {
     /* controller-service layer */
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "itemDtos", ignore = true)
+    @Mapping(target = "created", ignore = true)
     @Mapping(target = "requestor", source = "userId", qualifiedByName = "userIdToUserDto")
     ItemRequestDto mapItemRequest2ItemRequestDto(ItemRequest itemRequest, Long userId);
 
