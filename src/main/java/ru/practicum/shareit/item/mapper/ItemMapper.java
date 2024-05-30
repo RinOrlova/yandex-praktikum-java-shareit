@@ -52,9 +52,12 @@ public interface ItemMapper {
 
     @Named("idToItemRequestEntity")
     default ItemRequestEntity idToItemRequestEntity(Long id) {
-        ItemRequestEntity itemRequestEntity = new ItemRequestEntity();
-        itemRequestEntity.setId(id);
-        return itemRequestEntity;
+        if (id != null) {
+            ItemRequestEntity itemRequestEntity = new ItemRequestEntity();
+            itemRequestEntity.setId(id);
+            return itemRequestEntity;
+        }
+        return null;
     }
 
     @Named("itemToItemId")
@@ -69,11 +72,7 @@ public interface ItemMapper {
     default BookingData findLastBooking(List<BookingEntity> bookings) {
         if (bookings != null) {
             LocalDateTime now = LocalDateTime.now();
-            return bookings.stream()
-                    .filter(booking -> booking.getEnd().isBefore(now) || isCurrentBooking(booking, now))
-                    .max(Comparator.comparing(BookingEntity::getEnd))
-                    .map(this::bookingDtoToBookingData)
-                    .orElse(null);
+            return bookings.stream().filter(booking -> booking.getEnd().isBefore(now) || isCurrentBooking(booking, now)).max(Comparator.comparing(BookingEntity::getEnd)).map(this::bookingDtoToBookingData).orElse(null);
         }
         return null;
     }
@@ -82,19 +81,13 @@ public interface ItemMapper {
     default BookingData findNextBooking(List<BookingEntity> bookings) {
         if (bookings != null) {
             LocalDateTime now = LocalDateTime.now();
-            return bookings.stream()
-                    .filter(booking -> booking.getStatus() != Status.REJECTED)
-                    .filter(booking -> isFutureBooking(booking, now))
-                    .min(Comparator.comparing(BookingEntity::getStart))
-                    .map(this::bookingDtoToBookingData)
-                    .orElse(null);
+            return bookings.stream().filter(booking -> booking.getStatus() != Status.REJECTED).filter(booking -> isFutureBooking(booking, now)).min(Comparator.comparing(BookingEntity::getStart)).map(this::bookingDtoToBookingData).orElse(null);
         }
         return null;
     }
 
     private static boolean isCurrentBooking(BookingEntity booking, LocalDateTime now) {
-        return booking.getStart().isBefore(now)
-                && booking.getEnd().isAfter(now);
+        return booking.getStart().isBefore(now) && booking.getEnd().isAfter(now);
     }
 
     private static boolean isFutureBooking(BookingEntity booking, LocalDateTime now) {
