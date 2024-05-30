@@ -5,12 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.ApiPathConstants;
-import ru.practicum.shareit.exception.PaginationSizeException;
 import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.request.model.ItemRequestResponse;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.request.validation.NonNegativeInteger;
-
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Collection;
@@ -37,22 +35,15 @@ public class ItemRequestController {
 
     @GetMapping(ApiPathConstants.ALL_PATH)
     public Collection<ItemRequestResponse> getRequests(@NonNegativeInteger @RequestParam(value = "from", defaultValue = "0", required = false) Integer from,
-                                                       @NonNegativeInteger @RequestParam(value = "size", defaultValue = "100", required = false) Integer size) {
-        validatePaginationSize(from, size);
-        return itemRequestService.getRequests(from, size);
+                                                       @NonNegativeInteger @RequestParam(value = "size", defaultValue = "100", required = false) Integer size,
+                                                       @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
+        return itemRequestService.getRequests(from, size, userId);
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public ItemRequestResponse getRequestById(@PathVariable @Positive Long id) {
-        return itemRequestService.getRequestById(id);
-    }
-
-    private void validatePaginationSize(Integer from, Integer size) {
-        if(size != null && from != null) {
-            if (size < from) {
-                throw new PaginationSizeException(from, size);
-            }
-        }
+    public ItemRequestResponse getRequestById(@PathVariable @Positive Long id,
+                                              @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
+        return itemRequestService.getRequestById(id, userId);
     }
 
 }

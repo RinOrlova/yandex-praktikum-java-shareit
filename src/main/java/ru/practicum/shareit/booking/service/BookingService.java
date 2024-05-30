@@ -13,8 +13,8 @@ public interface BookingService {
 
     BookingResponse getBookingByIdAndUserId(Long bookingId, Long userId);
 
-    Collection<BookingResponse> getBookingsByUser(Long userId, State state);
+    Collection<BookingResponse> getBookingsByUser(Long userId, State state, int from, int size);
 
-    Collection<BookingResponse> getBookingsByOwnerId(Long ownerId, State state);
+    Collection<BookingResponse> getBookingsByOwnerId(Long ownerId, State state, int from, int size);
 
 }

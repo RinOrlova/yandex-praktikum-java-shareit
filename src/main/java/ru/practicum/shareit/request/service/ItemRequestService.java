@@ -10,8 +10,8 @@ public interface ItemRequestService {
 
     Collection<ItemRequestResponse> getOwnRequests(Long userId);
 
-    Collection<ItemRequestResponse> getRequests(int from, int size);
+    Collection<ItemRequestResponse> getRequests(int from, int size, Long userId);
 
-    ItemRequestResponse getRequestById(Long id);
+    ItemRequestResponse getRequestById(Long id, Long userId);
 
 }

@@ -34,7 +34,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public Collection<ItemRequestResponse> getOwnRequests(Long userId) {
-        // check if user exists
         userService.getUserById(userId);
         Collection<ItemRequestDto> allItemRequestDtosForUser = itemRequestStorage.getAllItemRequestsByRequestorId(userId);
         return allItemRequestDtosForUser.stream()
@@ -43,15 +42,19 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    public Collection<ItemRequestResponse> getRequests(int from, int size) {
-        Collection<ItemRequestDto> itemRequestDtosSegment = itemRequestStorage.getAllItemsFromTo(from, size);
+    public Collection<ItemRequestResponse> getRequests(int from, int size, Long userId) {
+        userService.getUserById(userId);
+        Collection<ItemRequestDto> itemRequestDtosSegment = itemRequestStorage.getAllItemsFromTo(from, size, userId);
         return itemRequestDtosSegment.stream()
                 .map(itemRequestMapper::mapItemRequestDto2ItemRequestResponse)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ItemRequestResponse getRequestById(Long id) {
+    public ItemRequestResponse getRequestById(Long id, Long userId) {
+        if(userId != null){
+            userService.getUserById(userId);
+        }
         ItemRequestDto itemRequestDto = itemRequestStorage.getById(id)
                 .orElseThrow(() -> new ItemRequestNotFoundException(id));
         return itemRequestMapper.mapItemRequestDto2ItemRequestResponse(itemRequestDto);

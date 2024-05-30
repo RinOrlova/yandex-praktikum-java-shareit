@@ -1,6 +1,8 @@
 package ru.practicum.shareit.booking.data;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.mapper.BookingMapper;
@@ -44,8 +46,23 @@ public class BookingStorageDatabase implements BookingStorage {
     }
 
     @Override
-    public Collection<BookingDto> getAll() {
-        return bookingRepository.findAll()
+    public Collection<BookingDto> getAllByItemOwner(Long itemOwner, int from, int size) {
+        Pageable pageable = PageRequest.of(from, size);
+        return bookingRepository.findAllByItemOwner(itemOwner, pageable)
+                .stream()
+                .map(bookingMapper::bookingEntity2BookingDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public Collection<BookingDto> getAllForBookingOwner(Long userId, int from, int size) {
+        int totalBookingByOwner = bookingRepository.findAllByBooker_Id(userId).size();
+        int maxPageValue = (int) Math.ceil((double)totalBookingByOwner / size)                - 1;
+        if (from > maxPageValue) {
+            from = maxPageValue;
+        }
+        Pageable pageable = PageRequest.of(from, size);
+        return bookingRepository.findAllForOwner(userId, pageable)
                 .stream()
                 .map(bookingMapper::bookingEntity2BookingDto)
                 .collect(Collectors.toList());

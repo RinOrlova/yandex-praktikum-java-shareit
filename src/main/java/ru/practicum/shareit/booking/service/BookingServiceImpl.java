@@ -95,10 +95,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingResponse> getBookingsByUser(Long userId, State state) {
+    public Collection<BookingResponse> getBookingsByUser(Long userId, State state, int from, int size) {
         getUserIfPresent(userId);
-        return bookingStorage.getAll().stream()
-                .filter(bookingDto -> isBookingOwner(bookingDto, userId))
+        return bookingStorage.getAllForBookingOwner(userId, from, size).stream()
                 .filter(bookingDto -> bookingFilter.isValidBooking(bookingDto, state))
                 .map(bookingMapper::bookingDtoToBookingResponse)
                 .sorted(Comparator.comparing(BookingResponse::getStart).reversed())
@@ -106,10 +105,9 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingResponse> getBookingsByOwnerId(Long bookerId, State state) {
-        getUserIfPresent(bookerId);
-        return bookingStorage.getAll().stream()
-                .filter(bookingDto -> isItemOwner(bookingDto, bookerId))
+    public Collection<BookingResponse> getBookingsByOwnerId(Long itemOwner, State state, int from, int size) {
+        getUserIfPresent(itemOwner);
+        return bookingStorage.getAllByItemOwner(itemOwner, from, size).stream()
                 .filter(bookingDto -> bookingFilter.isValidBooking(bookingDto, state))
                 .map(bookingMapper::bookingDtoToBookingResponse)
                 .sorted(Comparator.comparing(BookingResponse::getStart).reversed())
