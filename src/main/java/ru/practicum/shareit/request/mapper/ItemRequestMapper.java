@@ -19,7 +19,7 @@ public interface ItemRequestMapper {
     @Mapping(target = "requestor", source = "userId", qualifiedByName = "userIdToUserDto")
     ItemRequestDto mapItemRequest2ItemRequestDto(ItemRequest itemRequest, Long userId);
 
-    default ItemRequestDto mapContext(ItemRequest itemRequest, @Context Long userId){
+    default ItemRequestDto mapContext(ItemRequest itemRequest, @Context Long userId) {
         return mapItemRequest2ItemRequestDto(itemRequest, userId);
     }
 

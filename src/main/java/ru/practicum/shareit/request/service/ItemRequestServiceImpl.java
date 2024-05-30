@@ -52,7 +52,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestResponse getRequestById(Long id, Long userId) {
-        if(userId != null){
+        if (userId != null) {
             userService.getUserById(userId);
         }
         ItemRequestDto itemRequestDto = itemRequestStorage.getById(id)

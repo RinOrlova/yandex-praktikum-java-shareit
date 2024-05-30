@@ -57,7 +57,7 @@ public class BookingStorageDatabase implements BookingStorage {
     @Override
     public Collection<BookingDto> getAllForBookingOwner(Long userId, int from, int size) {
         int totalBookingByOwner = bookingRepository.findAllByBooker_Id(userId).size();
-        int maxPageValue = (int) Math.ceil((double)totalBookingByOwner / size)                - 1;
+        int maxPageValue = (int) Math.ceil((double) totalBookingByOwner / size) - 1;
         if (from > maxPageValue) {
             from = maxPageValue;
         }

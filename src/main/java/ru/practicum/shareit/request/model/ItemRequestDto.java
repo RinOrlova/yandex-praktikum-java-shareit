@@ -21,7 +21,7 @@ public class ItemRequestDto {
     @NonNull
     UserDto requestor;
     @Builder.Default
-    LocalDateTime created =  LocalDateTime.now();
+    LocalDateTime created = LocalDateTime.now();
     @Nullable
     Collection<ItemDto> itemDtos;
 
