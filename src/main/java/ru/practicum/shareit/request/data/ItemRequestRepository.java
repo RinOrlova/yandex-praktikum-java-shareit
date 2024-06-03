@@ -15,5 +15,4 @@ public interface ItemRequestRepository extends JpaRepository<ItemRequestEntity, 
     @Query("SELECT i FROM ItemRequestEntity i WHERE i.requestor.id <> :id")
     Page<ItemRequestEntity> findAllExcludingRequestorId(@Param("id") Long id, Pageable pageable);
 
-
 }

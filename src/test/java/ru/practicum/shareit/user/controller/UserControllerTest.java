@@ -36,8 +36,8 @@ public class UserControllerTest {
     void testAddUser() throws Exception {
         User user = User.builder()
                 .id(1L)
-                .name("Test User")
-                .email("test@example.com")
+                .name("Thom Yorke")
+                .email("thom.yorke@gmail.com")
                 .build();
 
         when(userService.addUser(any(User.class))).thenReturn(user);
@@ -88,8 +88,8 @@ public class UserControllerTest {
     void testGetAllUsers() throws Exception {
         User user = User.builder()
                 .id(1L)
-                .name("Test User")
-                .email("test@example.com")
+                .name("Thom Yorke")
+                .email("thom.yorke@gmail.com")
                 .build();
 
         when(userService.getUsers()).thenReturn(Collections.singletonList(user));
@@ -107,8 +107,8 @@ public class UserControllerTest {
     void testGetUserById() throws Exception {
         User user = User.builder()
                 .id(1L)
-                .name("Test User")
-                .email("test@example.com")
+                .name("Thom Yorke")
+                .email("thom.yorke@gmail.com")
                 .build();
 
         when(userService.getUserById(anyLong())).thenReturn(user);

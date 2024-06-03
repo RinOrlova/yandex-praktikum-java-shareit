@@ -2,116 +2,104 @@ package ru.practicum.shareit.request.data;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequestDto;
+import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.user.model.UserDto;
 
-import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
-@DataJpaTest
-class ItemRequestStorageDatabaseTest {
+@ExtendWith(MockitoExtension.class)
+public class ItemRequestStorageDatabaseTest {
 
-    @Autowired
+    @Mock
     private ItemRequestRepository requestRepository;
 
-    @MockBean
+    @Mock
     private ItemRequestMapper requestMapper;
 
     @InjectMocks
     private ItemRequestStorageDatabase itemRequestStorageDatabase;
 
-    private ItemRequestEntity itemRequestEntity;
-    private ItemRequestDto itemRequestDto;
+    private ItemRequestDto requestDto;
+    private ItemRequestEntity requestEntity;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        itemRequestEntity = new ItemRequestEntity();
-        itemRequestEntity.setId(1L);
-        itemRequestEntity.setDescription("Request description");
-        itemRequestEntity.setCreated(LocalDateTime.now());
-
-        itemRequestDto = ItemRequestDto.builder()
+        requestDto = ItemRequestDto.builder()
                 .id(1L)
-                .description("Request description")
-                .created(LocalDateTime.now())
+                .description("Test Request")
+                .requestor(UserDto.builder().name("Thom Yorke").email("thom.yorke@gmail.com").build())
                 .build();
+
+        requestEntity = new ItemRequestEntity();
+        requestEntity.setId(1L);
+        requestEntity.setDescription("Test Request");
+        UserEntity userEntity = new UserEntity();
+        userEntity.setId(1L);
+        userEntity.setName("Thom Yorke");
+        userEntity.setEmail("thom.yorke@gmail.com");
+
+        requestEntity.setRequestor(userEntity);
     }
 
     @Test
-    void testAdd() {
-        when(requestMapper.mapItemRequestDto2ItemRequestEntity(any(ItemRequestDto.class))).thenReturn(itemRequestEntity);
-        when(requestMapper.mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class))).thenReturn(itemRequestDto);
-        when(requestRepository.saveAndFlush(any(ItemRequestEntity.class))).thenReturn(itemRequestEntity);
+    public void testAdd() {
+        when(requestMapper.mapItemRequestDto2ItemRequestEntity(requestDto)).thenReturn(requestEntity);
+        when(requestRepository.saveAndFlush(requestEntity)).thenReturn(requestEntity);
+        when(requestMapper.mapItemRequestEntity2ItemRequestDto(requestEntity)).thenReturn(requestDto);
 
-        ItemRequestDto savedDto = itemRequestStorageDatabase.add(itemRequestDto);
+        ItemRequestDto result = itemRequestStorageDatabase.add(requestDto);
 
-        assertThat(savedDto).isNotNull();
-        assertThat(savedDto.getId()).isEqualTo(itemRequestDto.getId());
-        assertThat(savedDto.getDescription()).isEqualTo(itemRequestDto.getDescription());
-
-        verify(requestRepository, times(1)).saveAndFlush(any(ItemRequestEntity.class));
-        verify(requestMapper, times(1)).mapItemRequestDto2ItemRequestEntity(any(ItemRequestDto.class));
-        verify(requestMapper, times(1)).mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class));
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(requestDto.getId());
+        assertThat(result.getDescription()).isEqualTo(requestDto.getDescription());
     }
 
     @Test
-    void testGetAllItemRequestsByRequestorId() {
-        when(requestRepository.getItemRequestEntitiesByRequestor_Id(anyLong())).thenReturn(Collections.singletonList(itemRequestEntity));
-        when(requestMapper.mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class))).thenReturn(itemRequestDto);
+    public void testGetAllItemRequestsByRequestorId() {
+        when(requestRepository.getItemRequestEntitiesByRequestor_Id(1L)).thenReturn(Collections.singletonList(requestEntity));
+        when(requestMapper.mapItemRequestEntity2ItemRequestDto(requestEntity)).thenReturn(requestDto);
 
-        Collection<ItemRequestDto> itemRequests = itemRequestStorageDatabase.getAllItemRequestsByRequestorId(1L);
+        List<ItemRequestDto> result = (List<ItemRequestDto>) itemRequestStorageDatabase.getAllItemRequestsByRequestorId(1L);
 
-        assertThat(itemRequests).isNotNull();
-        assertThat(itemRequests.size()).isEqualTo(1);
-        assertThat(itemRequests.iterator().next().getId()).isEqualTo(itemRequestDto.getId());
-
-        verify(requestRepository, times(1)).getItemRequestEntitiesByRequestor_Id(anyLong());
-        verify(requestMapper, times(1)).mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class));
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(requestDto.getId());
     }
 
     @Test
-    void testGetById() {
-        when(requestRepository.findById(anyLong())).thenReturn(Optional.of(itemRequestEntity));
-        when(requestMapper.mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class))).thenReturn(itemRequestDto);
+    public void testGetById() {
+        when(requestRepository.findById(1L)).thenReturn(Optional.of(requestEntity));
+        when(requestMapper.mapItemRequestEntity2ItemRequestDto(requestEntity)).thenReturn(requestDto);
 
-        Optional<ItemRequestDto> optionalItemRequest = itemRequestStorageDatabase.getById(1L);
+        Optional<ItemRequestDto> result = itemRequestStorageDatabase.getById(1L);
 
-        assertThat(optionalItemRequest).isPresent();
-        assertThat(optionalItemRequest.get().getId()).isEqualTo(itemRequestDto.getId());
-
-        verify(requestRepository, times(1)).findById(anyLong());
-        verify(requestMapper, times(1)).mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class));
+        assertThat(result).isPresent();
+        assertThat(result.get().getId()).isEqualTo(requestDto.getId());
     }
 
     @Test
-    void testGetAllItemsFromTo() {
-        Page<ItemRequestEntity> page = mock(Page.class);
-        when(page.getContent()).thenReturn(Collections.singletonList(itemRequestEntity));
-        when(requestRepository.findAllExcludingRequestorId(anyLong(), any(Pageable.class))).thenReturn(page);
-        when(requestMapper.mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class))).thenReturn(itemRequestDto);
+    public void testGetAllItemsFromTo() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.ASC, "id"));
+        Page<ItemRequestEntity> page = new PageImpl<>(Collections.singletonList(requestEntity));
+        when(requestRepository.findAllExcludingRequestorId(1L, pageable)).thenReturn(page);
+        when(requestMapper.mapItemRequestEntity2ItemRequestDto(requestEntity)).thenReturn(requestDto);
 
-        Collection<ItemRequestDto> itemRequests = itemRequestStorageDatabase.getAllItemsFromTo(0, 1, 1L);
+        List<ItemRequestDto> result = (List<ItemRequestDto>) itemRequestStorageDatabase.getAllItemsFromTo(0, 10, 1L);
 
-        assertThat(itemRequests).isNotNull();
-        assertThat(itemRequests.size()).isEqualTo(1);
-        assertThat(itemRequests.iterator().next().getId()).isEqualTo(itemRequestDto.getId());
-
-        verify(requestRepository, times(1)).findAllExcludingRequestorId(anyLong(), any(Pageable.class));
-        verify(requestMapper, times(1)).mapItemRequestEntity2ItemRequestDto(any(ItemRequestEntity.class));
+        assertThat(result).isNotNull();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getId()).isEqualTo(requestDto.getId());
     }
 }
