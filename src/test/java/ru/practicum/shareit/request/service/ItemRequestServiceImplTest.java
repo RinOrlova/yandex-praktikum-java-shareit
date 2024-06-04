@@ -1,11 +1,13 @@
 package ru.practicum.shareit.request.service;
 
+import org.checkerframework.checker.nullness.Opt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import ru.practicum.shareit.exception.ItemNotFoundException;
 import ru.practicum.shareit.exception.ItemRequestNotFoundException;
 import ru.practicum.shareit.request.data.ItemRequestStorage;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
@@ -16,6 +18,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserDto;
 import ru.practicum.shareit.user.service.UserService;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;

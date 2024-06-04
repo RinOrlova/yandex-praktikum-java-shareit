@@ -13,6 +13,7 @@ import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.BookingDto;
 import ru.practicum.shareit.booking.model.BookingRequest;
 import ru.practicum.shareit.booking.model.BookingResponse;
+import ru.practicum.shareit.exception.BookingNotFoundException;
 import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.ItemUnavailableException;
 import ru.practicum.shareit.exception.UnableToChangeBookingStatusException;
@@ -30,6 +31,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -161,6 +163,13 @@ class BookingServiceImplTest {
 
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(bookingDto.getId());
+    }
+
+    @Test
+    void getBookingByIdAndUserId_bookingNotFound() {
+        when(userService.getUserById(1L)).thenReturn(user);
+        when(bookingStorage.getById(1L)).thenReturn(Optional.empty());
+        assertThrows(BookingNotFoundException.class, () -> bookingService.getBookingByIdAndUserId(1L, 1L));
     }
 
     @Test

@@ -1,5 +1,8 @@
 package ru.practicum.shareit;
 
+import lombok.experimental.UtilityClass;
+
+@UtilityClass
 public class ApiPathConstants {
 
     public static final String USER_PATH = "/users";

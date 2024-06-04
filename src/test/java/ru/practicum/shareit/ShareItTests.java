@@ -18,6 +18,8 @@ import ru.practicum.shareit.booking.model.BookingResponse;
 import ru.practicum.shareit.item.model.CommentRequest;
 import ru.practicum.shareit.item.model.CommentResponse;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.request.model.ItemRequest;
+import ru.practicum.shareit.request.model.ItemRequestResponse;
 import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
@@ -231,6 +233,40 @@ class ShareItTests {
         assertEquals(2L, commentResponse.getAuthorId());
         assertEquals("Requestor", commentResponse.getAuthorName());
         assertEquals("comment text", commentResponse.getText());
+
+    }
+
+    @Test
+    @Order(5)
+    public void testItemRequestOperation() throws Exception {
+        ItemRequest itemRequest = ItemRequest.builder().description("description").build();
+        // create item request
+        String itemRequestResponseJson = mockMvc.perform(post("/requests")
+                        .header(ApiPathConstants.X_SHARER_USER_ID, 2L)
+                        .contentType("application/json")
+                        .content(objectMapper.writeValueAsString(itemRequest)))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        ItemRequestResponse itemRequestResponse = objectMapper.readValue(itemRequestResponseJson, ItemRequestResponse.class);
+        assertEquals("description", itemRequestResponse.getDescription());
+        // get own item requests
+        String itemRequestResponseJsonByOwnerId = mockMvc.perform(get("/requests")
+                        .header(ApiPathConstants.X_SHARER_USER_ID, 2L))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        Collection<ItemRequestResponse> itemRequestResponseByOwnerId = objectMapper.readValue(itemRequestResponseJsonByOwnerId, new TypeReference<>() {
+        });
+        assertEquals(1, itemRequestResponseByOwnerId.size());
+        assertEquals(itemRequestResponse.getId(), itemRequestResponseByOwnerId.iterator().next().getId());
+        assertEquals(itemRequestResponse.getDescription(), itemRequestResponseByOwnerId.iterator().next().getDescription());
+        // get request by id
+        String itemRequestResponseJsonById = mockMvc.perform(get("/requests/1")
+                        .header(ApiPathConstants.X_SHARER_USER_ID, 2L))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        ItemRequestResponse itemRequestResponseById = objectMapper.readValue(itemRequestResponseJsonById, ItemRequestResponse.class);
+        assertEquals(itemRequestResponse.getId(), itemRequestResponseById.getId());
+        assertEquals(itemRequestResponse.getDescription(), itemRequestResponseById.getDescription());
 
     }
 }

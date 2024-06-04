@@ -60,11 +60,6 @@ public interface ItemMapper {
         return null;
     }
 
-    @Named("itemToItemId")
-    default Long itemToItemId(ItemEntity item) {
-        return item == null ? null : item.getId();
-    }
-
     @Mapping(target = "bookerId", source = "booker", qualifiedByName = "userDtoToUserId")
     BookingData bookingDtoToBookingData(BookingEntity bookingEntity);
 
