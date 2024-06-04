@@ -79,4 +79,12 @@ class CommentMapperTest {
         assertEquals(1L, commentDto.getItemId());
         assertEquals(2L, commentDto.getAuthorId());
     }
+
+    @Test
+    void testNullBranches() {
+        assertNull(commentMapper.commentDtoToCommentEntity(null));
+        assertNull(commentMapper.commentEntityToCommentDto(null));
+        assertNull(commentMapper.commentDtoToCommentResponse(null));
+        assertNull(commentMapper.commentRequestToCommentDto(null, null, null));
+    }
 }
