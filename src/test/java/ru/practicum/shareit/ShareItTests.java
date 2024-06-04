@@ -216,7 +216,7 @@ class ShareItTests {
     @Test
     @Order(4)
     void addCommentOperation() throws Exception {
-        Thread.sleep(10000); // wait until booking is in the past
+        Thread.sleep(15000); // wait until booking is in the past
         CommentRequest commentRequest = CommentRequest.builder()
                 .text("comment text")
                 .build();
