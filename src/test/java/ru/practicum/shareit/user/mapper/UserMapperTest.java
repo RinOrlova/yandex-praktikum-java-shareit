@@ -8,6 +8,7 @@ import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserDto;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class UserMapperTest {
 
@@ -112,5 +113,10 @@ class UserMapperTest {
 
         assertThat(userEntity).isNotNull();
         assertThat(userEntity.getId()).isEqualTo(userId);
+    }
+
+    @Test
+    void null_input() {
+        assertNull(userMapper.userIdToUserDto(null));
     }
 }

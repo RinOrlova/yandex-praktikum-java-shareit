@@ -57,9 +57,6 @@ public class ItemControllerTest {
 
     @Test
     void testAddComment() throws Exception {
-        CommentRequest commentRequest = CommentRequest.builder()
-                .text("Test comment")
-                .build();
         CommentResponse commentResponse = CommentResponse.builder()
                 .id(1L)
                 .text("Test comment")
