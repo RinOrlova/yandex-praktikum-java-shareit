@@ -22,7 +22,7 @@ public class ItemRequestRepositoryTest {
     @Test
     public void testGetItemRequestEntitiesByRequestorId() {
         Long requestorId = 1L;
-        List<ItemRequestEntity> entities = itemRequestRepository.getItemRequestEntitiesByRequestor_Id(requestorId);
+        List<ItemRequest> entities = itemRequestRepository.getItemRequestEntitiesByRequestor_Id(requestorId);
 
         assertThat(entities).isNotNull();
         assertThat(entities).allMatch(entity -> entity.getRequestor().getId().equals(requestorId));
@@ -32,7 +32,7 @@ public class ItemRequestRepositoryTest {
     public void testFindAllExcludingRequestorId() {
         Long requestorId = 1L;
         PageRequest pageRequest = PageRequest.of(0, 10);
-        Page<ItemRequestEntity> page = itemRequestRepository.findAllExcludingRequestorId(requestorId, pageRequest);
+        Page<ItemRequest> page = itemRequestRepository.findAllExcludingRequestorId(requestorId, pageRequest);
 
         assertThat(page).isNotNull();
         assertThat(page.getContent()).allMatch(entity -> !entity.getRequestor().getId().equals(requestorId));

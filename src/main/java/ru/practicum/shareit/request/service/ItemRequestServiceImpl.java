@@ -3,7 +3,6 @@ package ru.practicum.shareit.request.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.ItemRequestNotFoundException;
 import ru.practicum.shareit.request.data.ItemRequestStorage;
 import ru.practicum.shareit.request.mapper.ItemRequestMapper;
 import ru.practicum.shareit.request.model.ItemRequest;
@@ -55,8 +54,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         if (userId != null) {
             userService.getUserById(userId);
         }
-        ItemRequestDto itemRequestDto = itemRequestStorage.getById(id)
-                .orElseThrow(() -> new ItemRequestNotFoundException(id));
+        ItemRequestDto itemRequestDto = itemRequestStorage.getById(id);
         return itemRequestMapper.mapItemRequestDto2ItemRequestResponse(itemRequestDto);
     }
 }

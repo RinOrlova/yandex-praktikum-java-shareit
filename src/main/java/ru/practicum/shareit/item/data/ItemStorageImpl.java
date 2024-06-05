@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.ItemDto;
-import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.user.data.User;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.util.Collection;
@@ -13,22 +13,22 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class ItemStorageDatabase implements ItemStorage {
+public class ItemStorageImpl implements ItemStorage {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
     private final UserMapper userMapper;
 
     @Override
     public ItemDto add(ItemDto itemDto) {
-        ItemEntity entity = itemMapper.itemDtoToItemEntity(itemDto);
-        ItemEntity savedEntity = itemRepository.saveAndFlush(entity);
+        Item entity = itemMapper.itemDtoToItemEntity(itemDto);
+        Item savedEntity = itemRepository.saveAndFlush(entity);
         return itemMapper.itemEntityToItemDto(savedEntity);
     }
 
     @Override
     public ItemDto update(ItemDto itemDto) {
-        ItemEntity entity = itemMapper.itemDtoToItemEntity(itemDto);
-        ItemEntity savedEntity = itemRepository.saveAndFlush(entity);
+        Item entity = itemMapper.itemDtoToItemEntity(itemDto);
+        Item savedEntity = itemRepository.saveAndFlush(entity);
         return itemMapper.itemEntityToItemDto(savedEntity);
     }
 
@@ -53,8 +53,8 @@ public class ItemStorageDatabase implements ItemStorage {
 
     @Override
     public Collection<ItemDto> getAllByUserId(Long ownerId) {
-        UserEntity userEntity = userMapper.userIdToUserDto(ownerId);
-        return itemRepository.getAllByUserEntity(userEntity)
+        User user = userMapper.userIdToUserDto(ownerId);
+        return itemRepository.getAllByUser(user)
                 .stream()
                 .map(itemMapper::itemEntityToItemDto)
                 .collect(Collectors.toList());

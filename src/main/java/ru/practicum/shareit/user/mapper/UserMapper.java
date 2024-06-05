@@ -2,23 +2,22 @@ package ru.practicum.shareit.user.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
-import ru.practicum.shareit.user.data.UserEntity;
-import ru.practicum.shareit.user.model.User;
+import ru.practicum.shareit.user.data.User;
 import ru.practicum.shareit.user.model.UserDto;
 
 @Mapper(componentModel = org.mapstruct.MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-    User userDto2User(UserDto userDto);
+    ru.practicum.shareit.user.model.User userDto2User(UserDto userDto);
 
-    UserDto user2UserDto(User user);
+    UserDto user2UserDto(ru.practicum.shareit.user.model.User user);
 
-    UserDto userEntity2UserDto(UserEntity userEntity);
+    UserDto userEntity2UserDto(User user);
 
-    UserEntity userDto2UserEntity(UserDto userDto);
+    User userDto2UserEntity(UserDto userDto);
 
     @Named("userToUserId")
-    default Long userToUserId(UserEntity user) {
+    default Long userToUserId(User user) {
         return user == null ? null : user.getId();
     }
 
@@ -29,11 +28,11 @@ public interface UserMapper {
 
     // Helper method to convert userId to UserEntity
     @Named("userIdToUserDto")
-    default UserEntity userIdToUserDto(Long ownerId) {
+    default User userIdToUserDto(Long ownerId) {
         if (ownerId == null) {
             return null;
         }
-        UserEntity user = new UserEntity();
+        User user = new User();
         user.setId(ownerId);
         return user;
     }

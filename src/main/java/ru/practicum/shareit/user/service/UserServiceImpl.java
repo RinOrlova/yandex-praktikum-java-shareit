@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    @Qualifier("userStorageDatabase")
+    @Qualifier("userStorageImpl")
     private final UserStorage userStorage;
     private final UserMapper userMapper;
 

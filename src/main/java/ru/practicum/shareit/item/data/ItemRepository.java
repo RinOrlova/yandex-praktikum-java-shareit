@@ -3,18 +3,18 @@ package ru.practicum.shareit.item.data;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.user.data.User;
 
 import java.util.List;
 
-public interface ItemRepository extends JpaRepository<ItemEntity, Long> {
+public interface ItemRepository extends JpaRepository<Item, Long> {
 
-    List<ItemEntity> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
+    List<Item> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
 
-    List<ItemEntity> getAllByUserEntity(UserEntity userEntity);
+    List<Item> getAllByUser(User user);
 
     @Query("SELECT COUNT(b) > 0 " +
-            "FROM BookingEntity b " +
+            "FROM Booking b " +
             "WHERE b.item.id = :itemId " +
             "AND b.booker.id = :userId " +
             "AND b.end < CURRENT_TIMESTAMP")

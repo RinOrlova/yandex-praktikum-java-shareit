@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.model.ItemDto;
-import ru.practicum.shareit.request.data.ItemRequestEntity;
+import ru.practicum.shareit.request.data.ItemRequest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,8 +16,8 @@ class ItemMapperTest {
     @Test
     void testIdToItemRequestEntity() {
         Long input = 1L;
-        ItemRequestEntity itemRequestEntity = itemMapper.idToItemRequestEntity(input);
-        assertEquals(input, itemRequestEntity.getId());
+        ItemRequest itemRequest = itemMapper.idToItemRequestEntity(input);
+        assertEquals(input, itemRequest.getId());
     }
 
     @Test

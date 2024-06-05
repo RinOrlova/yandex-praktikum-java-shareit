@@ -19,7 +19,6 @@ import ru.practicum.shareit.user.service.UserService;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -132,7 +131,7 @@ public class ItemRequestServiceImplTest {
         Long requestId = 1L;
         Long userId = 1L;
         when(userService.getUserById(userId)).thenReturn(user);
-        when(itemRequestStorage.getById(requestId)).thenReturn(Optional.of(itemRequestDto));
+        when(itemRequestStorage.getById(requestId)).thenReturn(itemRequestDto);
         when(itemRequestMapper.mapItemRequestDto2ItemRequestResponse(itemRequestDto)).thenReturn(itemRequestResponse);
 
         ItemRequestResponse result = itemRequestService.getRequestById(requestId, userId);
@@ -149,7 +148,7 @@ public class ItemRequestServiceImplTest {
         Long requestId = 1L;
         Long userId = 1L;
         when(userService.getUserById(userId)).thenReturn(user);
-        when(itemRequestStorage.getById(requestId)).thenReturn(Optional.empty());
+        when(itemRequestStorage.getById(requestId)).thenThrow(new ItemRequestNotFoundException(requestId));
 
         assertThrows(ItemRequestNotFoundException.class, () -> itemRequestService.getRequestById(requestId, userId));
 

@@ -3,8 +3,8 @@ package ru.practicum.shareit.booking.data;
 import lombok.Getter;
 import lombok.Setter;
 import ru.practicum.shareit.booking.Status;
-import ru.practicum.shareit.item.data.ItemEntity;
-import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.item.data.Item;
+import ru.practicum.shareit.user.data.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "bookings")
-public class BookingEntity {
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -27,11 +27,11 @@ public class BookingEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id", nullable = false)
-    private ItemEntity item;
+    private Item item;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booker_id", nullable = false)
-    private UserEntity booker;
+    private User booker;
 
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)

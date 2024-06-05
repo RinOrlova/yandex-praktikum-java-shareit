@@ -8,11 +8,11 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ItemRequestRepository extends JpaRepository<ItemRequestEntity, Long> {
+public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
 
-    List<ItemRequestEntity> getItemRequestEntitiesByRequestor_Id(Long id);
+    List<ItemRequest> getItemRequestEntitiesByRequestor_Id(Long id);
 
-    @Query("SELECT i FROM ItemRequestEntity i WHERE i.requestor.id <> :id")
-    Page<ItemRequestEntity> findAllExcludingRequestorId(@Param("id") Long id, Pageable pageable);
+    @Query("SELECT i FROM ItemRequest i WHERE i.requestor.id <> :id")
+    Page<ItemRequest> findAllExcludingRequestorId(@Param("id") Long id, Pageable pageable);
 
 }

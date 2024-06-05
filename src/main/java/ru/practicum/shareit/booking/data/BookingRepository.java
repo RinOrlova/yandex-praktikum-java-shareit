@@ -7,14 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface BookingRepository extends JpaRepository<BookingEntity, Long>, CustomRefreshRepository {
+public interface BookingRepository extends JpaRepository<Booking, Long>, CustomRefreshRepository {
 
-    @Query("SELECT i FROM BookingEntity i WHERE i.booker.id = :id ORDER BY i.start DESC ")
-    Page<BookingEntity> findAllForOwner(Long id, Pageable pageable);
+    @Query("SELECT i FROM Booking i WHERE i.booker.id = :id ORDER BY i.start DESC ")
+    Page<Booking> findAllForOwner(Long id, Pageable pageable);
 
-    List<BookingEntity> findAllByBooker_Id(Long id);
+    List<Booking> findAllByBooker_Id(Long id);
 
-    @Query("SELECT i FROM BookingEntity i WHERE i.item.userEntity.id = :id ORDER BY i.start DESC ")
-    Page<BookingEntity> findAllByItemOwner(Long id, Pageable pageable);
+    @Query("SELECT i FROM Booking i WHERE i.item.user.id = :id ORDER BY i.start DESC ")
+    Page<Booking> findAllByItemOwner(Long id, Pageable pageable);
 
 }

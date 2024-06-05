@@ -5,11 +5,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.practicum.shareit.item.data.CommentEntity;
-import ru.practicum.shareit.item.data.ItemEntity;
+import ru.practicum.shareit.item.data.Comment;
+import ru.practicum.shareit.item.data.Item;
 import ru.practicum.shareit.item.model.CommentDto;
 import ru.practicum.shareit.item.model.CommentRequest;
-import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.user.data.User;
 import ru.practicum.shareit.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
@@ -35,25 +35,25 @@ class CommentMapperTest {
                 .authorName("author")
                 .text("text")
                 .build();
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName("name");
-        userEntity.setEmail("email@email.com");
-        when(userMapper.userIdToUserDto(any())).thenReturn(userEntity);
-        CommentEntity commentEntity = commentMapper.commentDtoToCommentEntity(commentDto);
-        assertEquals(LocalDateTime.parse("2024-12-12T00:00:00"), commentEntity.getCreated());
-        assertEquals("name", commentEntity.getUserEntity().getName());
-        assertEquals("email@email.com", commentEntity.getUserEntity().getEmail());
+        User user = new User();
+        user.setName("name");
+        user.setEmail("email@email.com");
+        when(userMapper.userIdToUserDto(any())).thenReturn(user);
+        Comment comment = commentMapper.commentDtoToCommentEntity(commentDto);
+        assertEquals(LocalDateTime.parse("2024-12-12T00:00:00"), comment.getCreated());
+        assertEquals("name", comment.getUser().getName());
+        assertEquals("email@email.com", comment.getUser().getEmail());
     }
 
     @Test
     void testCommentEntityToCommentDto() {
-        CommentEntity commentEntity = new CommentEntity();
-        commentEntity.setId(1L);
-        commentEntity.setText("text");
-        commentEntity.setCreated(LocalDateTime.parse("2024-12-12T00:00:00"));
-        commentEntity.setItemEntity(new ItemEntity());
-        commentEntity.setUserEntity(new UserEntity());
-        CommentDto commentDto = commentMapper.commentEntityToCommentDto(commentEntity);
+        Comment comment = new Comment();
+        comment.setId(1L);
+        comment.setText("text");
+        comment.setCreated(LocalDateTime.parse("2024-12-12T00:00:00"));
+        comment.setItem(new Item());
+        comment.setUser(new User());
+        CommentDto commentDto = commentMapper.commentEntityToCommentDto(comment);
         assertEquals(LocalDateTime.parse("2024-12-12T00:00:00"), commentDto.getCreated());
         assertEquals(1L, commentDto.getId());
         assertEquals("text", commentDto.getText());

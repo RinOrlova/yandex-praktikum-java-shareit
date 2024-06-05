@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BookingServiceImpl implements BookingService {
 
-    @Qualifier("bookingStorageDatabase")
+    @Qualifier("bookingStorageImpl")
     private final BookingStorage bookingStorage;
     private final BookingMapper bookingMapper;
     private final UserService userService;

@@ -5,8 +5,8 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import ru.practicum.shareit.item.data.CommentEntity;
-import ru.practicum.shareit.item.data.ItemEntity;
+import ru.practicum.shareit.item.data.Comment;
+import ru.practicum.shareit.item.data.Item;
 import ru.practicum.shareit.item.model.CommentDto;
 import ru.practicum.shareit.item.model.CommentRequest;
 import ru.practicum.shareit.item.model.CommentResponse;
@@ -15,14 +15,14 @@ import ru.practicum.shareit.user.mapper.UserMapper;
 @Mapper(componentModel = org.mapstruct.MappingConstants.ComponentModel.SPRING, uses = UserMapper.class)
 public interface CommentMapper {
 
-    @Mapping(target = "itemEntity", source = "itemId", qualifiedByName = "itemIdToItemEntity")
-    @Mapping(target = "userEntity", source = "authorId", qualifiedByName = "userIdToUserDto")
-    CommentEntity commentDtoToCommentEntity(CommentDto commentDto);
+    @Mapping(target = "item", source = "itemId", qualifiedByName = "itemIdToItemEntity")
+    @Mapping(target = "user", source = "authorId", qualifiedByName = "userIdToUserDto")
+    Comment commentDtoToCommentEntity(CommentDto commentDto);
 
-    @Mapping(target = "itemId", source = "itemEntity", qualifiedByName = "itemEntityToItemId")
-    @Mapping(target = "authorId", source = "userEntity", qualifiedByName = "userToUserId")
-    @Mapping(target = "authorName", source = "userEntity.name")
-    CommentDto commentEntityToCommentDto(CommentEntity savedEntity);
+    @Mapping(target = "itemId", source = "item", qualifiedByName = "itemEntityToItemId")
+    @Mapping(target = "authorId", source = "user", qualifiedByName = "userToUserId")
+    @Mapping(target = "authorName", source = "user.name")
+    CommentDto commentEntityToCommentDto(Comment savedEntity);
 
     CommentResponse commentDtoToCommentResponse(CommentDto commentDto);
 
@@ -38,19 +38,19 @@ public interface CommentMapper {
     }
 
     @Named("itemIdToItemEntity")
-    default ItemEntity itemIdToItemEntity(Long itemId) {
+    default Item itemIdToItemEntity(Long itemId) {
         if (itemId == null) {
             return null;
         }
-        ItemEntity itemEntity = new ItemEntity();
-        itemEntity.setId(itemId);
-        return itemEntity;
+        Item item = new Item();
+        item.setId(itemId);
+        return item;
     }
 
     @Named("itemEntityToItemId")
-    default Long itemEntityToItemId(ItemEntity itemEntity) {
-        return itemEntity == null
+    default Long itemEntityToItemId(Item item) {
+        return item == null
                 ? null
-                : itemEntity.getId();
+                : item.getId();
     }
 }

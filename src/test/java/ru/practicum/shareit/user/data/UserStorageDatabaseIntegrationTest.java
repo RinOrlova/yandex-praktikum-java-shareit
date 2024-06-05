@@ -16,11 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Import({UserStorageDatabase.class, UserMapperImpl.class})
+@Import({UserStorageImpl.class, UserMapperImpl.class})
 class UserStorageDatabaseIntegrationTest {
 
     @Autowired
-    private UserStorageDatabase userStorageDatabase;
+    private UserStorageImpl userStorageDatabase;
 
     @Autowired
     private UserRepository userRepository;

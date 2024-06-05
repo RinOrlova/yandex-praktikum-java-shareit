@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ItemServiceImpl implements ItemService {
-    @Qualifier("itemStorageDatabase")
+    @Qualifier("itemStorageImpl")
     private final ItemStorage itemStorage;
     private final CommentStorage commentStorage;
     private final CommentMapper commentMapper;
