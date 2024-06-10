@@ -14,7 +14,7 @@ import javax.validation.constraints.Email;
 @NoArgsConstructor
 @Getter
 @Setter
-public class UserEntity {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

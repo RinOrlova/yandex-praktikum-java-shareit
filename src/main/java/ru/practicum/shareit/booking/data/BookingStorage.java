@@ -11,8 +11,9 @@ public interface BookingStorage {
 
     BookingDto update(BookingDto bookingDto);
 
-    Collection<BookingDto> getAll();
+    Collection<BookingDto> getAllByItemOwner(Long itemOwner, int from, int size);
 
     Optional<BookingDto> getById(Long id);
 
+    Collection<BookingDto> getAllForBookingOwner(Long userId, int from, int size);
 }

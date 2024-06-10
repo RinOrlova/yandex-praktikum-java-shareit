@@ -11,21 +11,21 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class UserStorageDatabase implements UserStorage {
+public class UserStorageImpl implements UserStorage {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
     @Override
     public UserDto add(UserDto userDto) {
-        UserEntity userEntity = userMapper.userDto2UserEntity(userDto);
-        UserEntity savedEntity = userRepository.saveAndFlush(userEntity);
+        User user = userMapper.userDto2UserEntity(userDto);
+        User savedEntity = userRepository.saveAndFlush(user);
         return userMapper.userEntity2UserDto(savedEntity);
     }
 
     @Override
     public UserDto update(UserDto userDto) {
-        UserEntity userEntity = userMapper.userDto2UserEntity(userDto);
-        UserEntity savedEntity = userRepository.saveAndFlush(userEntity);
+        User user = userMapper.userDto2UserEntity(userDto);
+        User savedEntity = userRepository.saveAndFlush(user);
         return userMapper.userEntity2UserDto(savedEntity);
     }
 

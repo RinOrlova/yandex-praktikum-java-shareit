@@ -8,15 +8,15 @@ import ru.practicum.shareit.item.model.CommentDto;
 
 @Component
 @RequiredArgsConstructor
-public class CommentStorageDatabase implements CommentStorage {
+public class CommentStorageImpl implements CommentStorage {
     private final CommentMapper commentMapper;
     private final CommentsRepository commentsRepository;
 
     @Override
     @Transactional
     public CommentDto addComment(CommentDto commentDto) {
-        CommentEntity entity = commentMapper.commentDtoToCommentEntity(commentDto);
-        CommentEntity savedEntity = commentsRepository.saveAndFlush(entity);
+        Comment entity = commentMapper.commentDtoToCommentEntity(commentDto);
+        Comment savedEntity = commentsRepository.saveAndFlush(entity);
         commentsRepository.refresh(savedEntity);
         return commentMapper.commentEntityToCommentDto(savedEntity);
     }

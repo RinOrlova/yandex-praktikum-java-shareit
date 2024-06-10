@@ -2,8 +2,9 @@ package ru.practicum.shareit.item.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.booking.data.BookingEntity;
-import ru.practicum.shareit.user.data.UserEntity;
+import ru.practicum.shareit.booking.data.Booking;
+import ru.practicum.shareit.request.data.ItemRequest;
+import ru.practicum.shareit.user.data.User;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.Set;
 @Table(name = "items")
 @Getter
 @Setter
-public class ItemEntity {
+public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -26,10 +27,13 @@ public class ItemEntity {
     private boolean available;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
-    private UserEntity userEntity;
+    private User user;
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
-    private List<BookingEntity> bookings;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "itemEntity")
-    private Set<CommentEntity> comments;
+    private List<Booking> bookings;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "item")
+    private Set<Comment> comments;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id", referencedColumnName = "id")
+    private ItemRequest itemRequest;
 
 }

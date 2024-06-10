@@ -4,7 +4,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import ru.practicum.shareit.booking.data.BookingEntity;
+import ru.practicum.shareit.booking.data.Booking;
 import ru.practicum.shareit.booking.model.BookingDto;
 import ru.practicum.shareit.booking.model.BookingRequest;
 import ru.practicum.shareit.booking.model.BookingResponse;
@@ -49,13 +49,13 @@ public interface BookingMapper {
                 .build();
     }
 
-    BookingDto bookingEntity2BookingDto(BookingEntity bookingEntity);
+    BookingDto bookingEntity2BookingDto(Booking booking);
 
-    BookingEntity bookingDto2BookingEntity(BookingDto bookingDto);
+    Booking bookingDto2BookingEntity(BookingDto bookingDto);
 
     @Named("bookingToBookingId")
-    default Long bookingToBookingId(BookingEntity bookingEntity) {
-        return bookingEntity == null ? null : bookingEntity.getId();
+    default Long bookingToBookingId(Booking booking) {
+        return booking == null ? null : booking.getId();
     }
 
 }
