@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>ru.yandex.practicum</groupId>
-    <artifactId>server</artifactId>
+    <artifactId>api</artifactId>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
@@ -18,20 +18,4 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>ru.yandex.practicum</groupId>
-            <artifactId>api</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 </project>
