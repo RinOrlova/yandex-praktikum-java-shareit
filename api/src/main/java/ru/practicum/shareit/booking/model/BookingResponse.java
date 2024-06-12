@@ -3,7 +3,7 @@ package ru.practicum.shareit.booking.model;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.model.User;
 

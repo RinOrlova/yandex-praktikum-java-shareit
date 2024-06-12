@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.booking.model.BookingRequest;
 import ru.practicum.shareit.booking.model.BookingResponse;
 import ru.practicum.shareit.item.model.CommentRequest;

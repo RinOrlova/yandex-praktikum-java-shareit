@@ -6,7 +6,7 @@ import lombok.Setter;
 import lombok.Value;
 import lombok.experimental.NonFinal;
 import org.springframework.lang.Nullable;
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.user.model.UserDto;
 

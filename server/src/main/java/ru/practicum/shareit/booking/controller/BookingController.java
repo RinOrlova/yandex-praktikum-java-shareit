@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.ApiPathConstants;
-import ru.practicum.shareit.booking.State;
+import ru.practicum.shareit.enums.State;
 import ru.practicum.shareit.booking.model.BookingRequest;
 import ru.practicum.shareit.booking.model.BookingResponse;
 import ru.practicum.shareit.booking.service.BookingService;

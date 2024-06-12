@@ -4,7 +4,7 @@ import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.booking.data.Booking;
 import ru.practicum.shareit.item.data.Item;
 import ru.practicum.shareit.item.model.BookingData;

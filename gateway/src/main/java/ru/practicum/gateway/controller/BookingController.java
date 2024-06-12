@@ -7,15 +7,13 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.gateway.client.BookingClient;
 import ru.practicum.shareit.ApiPathConstants;
-import ru.practicum.shareit.booking.State;
+import ru.practicum.shareit.enums.State;
 import ru.practicum.shareit.booking.model.BookingRequest;
-import ru.practicum.shareit.booking.model.BookingResponse;
 import ru.practicum.shareit.booking.validation.ValidStateEnum;
 import ru.practicum.shareit.request.validation.NonNegativeInteger;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.Collection;
 
 @RestController
 @RequiredArgsConstructor

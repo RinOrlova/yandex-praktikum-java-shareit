@@ -1,8 +1,8 @@
 package ru.practicum.shareit.booking.service;
 
 import org.junit.jupiter.api.Test;
-import ru.practicum.shareit.booking.State;
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.enums.State;
+import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.booking.model.BookingDto;
 
 import java.time.LocalDateTime;

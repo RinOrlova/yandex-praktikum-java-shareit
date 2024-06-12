@@ -2,7 +2,7 @@ package ru.practicum.shareit.booking.data;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.practicum.shareit.booking.Status;
+import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.item.data.Item;
 import ru.practicum.shareit.user.data.User;
 

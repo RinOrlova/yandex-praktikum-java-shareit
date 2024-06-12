@@ -8,7 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.practicum.shareit.ApiPathConstants;
-import ru.practicum.shareit.booking.State;
+import ru.practicum.shareit.enums.State;
 import ru.practicum.shareit.booking.model.BookingRequest;
 import ru.practicum.shareit.booking.service.BookingService;
 
