@@ -8,8 +8,6 @@ import ru.practicum.shareit.ApiPathConstants;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.Collection;
 
 @RestController
@@ -21,18 +19,18 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public User addUser(@Valid @RequestBody User user) {
+    public User addUser(@RequestBody User user) {
         return userService.addUser(user);
     }
 
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
     public User updateUser(@RequestBody User user,
-                           @PathVariable @Positive Long id) {
+                           @PathVariable Long id) {
         return userService.updateUser(user, id);
     }
 
     @DeleteMapping(ApiPathConstants.BY_ID_PATH)
-    public void deleteUser(@PathVariable @Positive Long id) {
+    public void deleteUser(@PathVariable Long id) {
         userService.delete(id);
     }
 
@@ -42,7 +40,7 @@ public class UserController {
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public User getUserById(@PathVariable @Positive Long id) {
+    public User getUserById(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 

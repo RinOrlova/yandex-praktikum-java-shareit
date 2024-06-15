@@ -10,8 +10,6 @@ import ru.practicum.shareit.item.model.CommentResponse;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.service.ItemService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.Collection;
 
 @RestController
@@ -25,26 +23,26 @@ public class ItemController {
 
     @PostMapping
     public Item add(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                    @Valid @RequestBody Item item) {
+                    @RequestBody Item item) {
         return itemService.add(item, userId);
     }
 
     @PostMapping(ApiPathConstants.COMMENT_PATH)
     public CommentResponse addComment(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                                      @PathVariable @Positive Long id,
-                                      @Valid @RequestBody CommentRequest commentRequest) {
+                                      @PathVariable Long id,
+                                      @RequestBody CommentRequest commentRequest) {
         return itemService.addComment(commentRequest, id, userId);
     }
 
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
     public Item update(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                       @PathVariable @Positive Long id,
+                       @PathVariable Long id,
                        @RequestBody Item item) {
         return itemService.update(item, id, userId);
     }
 
     @DeleteMapping(ApiPathConstants.BY_ID_PATH)
-    public void delete(@PathVariable @Positive Long id) {
+    public void delete(@PathVariable Long id) {
         itemService.delete(id);
     }
 
@@ -54,7 +52,7 @@ public class ItemController {
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public Item getItemById(@PathVariable @Positive Long id,
+    public Item getItemById(@PathVariable Long id,
                             @RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return itemService.getItemByIdForUser(id, userId);
     }

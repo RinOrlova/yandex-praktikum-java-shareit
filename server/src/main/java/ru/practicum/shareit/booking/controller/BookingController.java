@@ -5,15 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.ApiPathConstants;
-import ru.practicum.shareit.enums.State;
 import ru.practicum.shareit.booking.model.BookingRequest;
 import ru.practicum.shareit.booking.model.BookingResponse;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.booking.validation.ValidStateEnum;
+import ru.practicum.shareit.enums.State;
 import ru.practicum.shareit.request.validation.NonNegativeInteger;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.Collection;
 
 @RestController
@@ -26,20 +24,20 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping
-    public BookingResponse addBooking(@Valid @RequestBody BookingRequest booking,
+    public BookingResponse addBooking(@RequestBody BookingRequest booking,
                                       @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return bookingService.addBooking(booking, userId);
     }
 
     @PatchMapping(ApiPathConstants.BY_ID_PATH)
     public BookingResponse updateBookingStatus(@RequestHeader(value = ApiPathConstants.X_SHARER_USER_ID) Long userId,
-                                               @PathVariable @Positive Long id,
+                                               @PathVariable Long id,
                                                @RequestParam("approved") boolean isApproved) {
         return bookingService.updateBooking(userId, id, isApproved);
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public BookingResponse getBookingById(@PathVariable @Positive Long id,
+    public BookingResponse getBookingById(@PathVariable Long id,
                                           @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return bookingService.getBookingByIdAndUserId(id, userId);
     }

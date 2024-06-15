@@ -10,8 +10,6 @@ import ru.practicum.shareit.request.model.ItemRequestResponse;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.request.validation.NonNegativeInteger;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 import java.util.Collection;
 
 @RestController
@@ -24,7 +22,7 @@ public class ItemRequestController {
     private final ItemRequestService itemRequestService;
 
     @PostMapping
-    public ItemRequestResponse addRequest(@Valid @RequestBody ItemRequest itemRequest,
+    public ItemRequestResponse addRequest(@RequestBody ItemRequest itemRequest,
                                           @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return itemRequestService.addRequest(itemRequest, userId);
     }
@@ -42,9 +40,8 @@ public class ItemRequestController {
     }
 
     @GetMapping(ApiPathConstants.BY_ID_PATH)
-    public ItemRequestResponse getRequestById(@PathVariable @Positive Long id,
+    public ItemRequestResponse getRequestById(@PathVariable Long id,
                                               @RequestHeader(ApiPathConstants.X_SHARER_USER_ID) Long userId) {
         return itemRequestService.getRequestById(id, userId);
     }
-
 }

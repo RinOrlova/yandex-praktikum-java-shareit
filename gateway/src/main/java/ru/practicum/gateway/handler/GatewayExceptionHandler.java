@@ -8,9 +8,7 @@ import ru.practicum.shareit.exception.ErrorResponse;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-
 @RestControllerAdvice
-
 public class GatewayExceptionHandler {
 
     @ExceptionHandler
