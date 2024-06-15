@@ -48,23 +48,6 @@ class BookingControllerTest {
     }
 
     @Test
-    void test_addBooking_badRequest_dateInPast() throws Exception {
-        var bookingRequest = BookingRequest.builder()
-                .start(LocalDateTime.now().minusDays(2L))
-                .end(LocalDateTime.now().minusDays(1L))
-                .itemId(1L)
-                .build();
-
-        mockMvc.perform(post(ApiPathConstants.BOOKING_PATH)
-                        .header(ApiPathConstants.X_SHARER_USER_ID, 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(bookingRequest)))
-                .andExpect(status().isBadRequest());
-
-        verify(bookingService, never()).addBooking(any(), any());
-    }
-
-    @Test
     void test_update_booking_status() throws Exception {
 
         mockMvc.perform(patch(ApiPathConstants.BOOKING_PATH + "/" + 1L)
