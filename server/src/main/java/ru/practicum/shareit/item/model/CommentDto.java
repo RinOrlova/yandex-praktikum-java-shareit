@@ -4,8 +4,6 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.lang.Nullable;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Value
@@ -13,12 +11,11 @@ import java.time.LocalDateTime;
 public class CommentDto {
     @Nullable
     Long id;
-    @NotBlank String text;
-    @NotNull Long itemId;
-    @NotNull Long authorId;
+    String text;
+    Long itemId;
+    Long authorId;
     @Nullable
     String authorName;
-    @NotNull
     @Builder.Default
     LocalDateTime created = LocalDateTime.now();
 }

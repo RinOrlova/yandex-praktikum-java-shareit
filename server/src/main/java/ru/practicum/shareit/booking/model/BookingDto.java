@@ -10,8 +10,6 @@ import ru.practicum.shareit.enums.Status;
 import ru.practicum.shareit.item.model.ItemDto;
 import ru.practicum.shareit.user.model.UserDto;
 
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Value
@@ -19,8 +17,8 @@ import java.time.LocalDateTime;
 public class BookingDto {
     @Nullable
     Long id;
-    @NonNull @FutureOrPresent LocalDateTime start;
-    @NonNull @FutureOrPresent LocalDateTime end;
+    @NonNull LocalDateTime start;
+    @NonNull LocalDateTime end;
     @NonFinal
     @Setter
     @Nullable
@@ -28,5 +26,5 @@ public class BookingDto {
     @Nullable
     UserDto booker;
     @Builder.Default
-    @NotNull Status status = Status.WAITING;
+    Status status = Status.WAITING;
 }

@@ -10,7 +10,6 @@ import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.model.UserDto;
 
-import javax.validation.constraints.Positive;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User updateUser(User user, @Positive Long id) {
+    public User updateUser(User user, Long id) {
         User userToStore = recreateUser(user, id);
         UserDto userDto = userMapper.user2UserDto(userToStore);
         UserDto userFromStorage = userStorage.update(userDto);

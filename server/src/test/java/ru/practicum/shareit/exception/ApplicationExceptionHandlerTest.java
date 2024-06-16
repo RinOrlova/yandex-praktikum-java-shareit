@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.ConstraintViolationException;
-import java.util.HashSet;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -51,11 +48,6 @@ class ApplicationExceptionHandlerTest {
         @GetMapping("/addCommentForbidden")
         public void throwAddCommentForbiddenException() {
             throw new AddCommentForbiddenException();
-        }
-
-        @GetMapping("/constraintViolation")
-        public void throwConstraintViolationException() {
-            throw new ConstraintViolationException("Invalid request", new HashSet<>());
         }
 
         @GetMapping("/notFound")
@@ -105,14 +97,6 @@ class ApplicationExceptionHandlerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.error").value("Not possible to add a comment."))
                 .andExpect(jsonPath("$.description").value("Comment creation forbidden."));
-    }
-
-    @Test
-    void handleConstraintViolationException() throws Exception {
-        mockMvc.perform(get("/test/constraintViolation"))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.error").value("Invalid request"))
-                .andExpect(jsonPath("$.description").value("Invalid request"));
     }
 
     @Test
